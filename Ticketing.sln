@@ -15,17 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{AA38E04A-DC30-457D-88C5-C8DE5D9BC241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Api", "src\API\Ticketing.Api\Ticketing.Api.csproj", "{06C7B555-78A8-4197-9DEB-A01158D8C428}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Api", "src\API\Ticketing.Api\Ticketing.Api.csproj", "{06C7B555-78A8-4197-9DEB-A01158D8C428}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Application", "src\Application\Ticketing.Application\Ticketing.Application.csproj", "{C1548808-5918-44AD-87C1-C8D9979DF882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Application", "src\Application\Ticketing.Application\Ticketing.Application.csproj", "{C1548808-5918-44AD-87C1-C8D9979DF882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Domain", "src\Domain\Ticketing.Domain\Ticketing.Domain.csproj", "{C8BD1658-05F6-4558-8903-A115FAB88632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Domain", "src\Domain\Ticketing.Domain\Ticketing.Domain.csproj", "{C8BD1658-05F6-4558-8903-A115FAB88632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Infrastructure", "src\Infrastructure\Ticketing.Infrastructure\Ticketing.Infrastructure.csproj", "{4A3E6B63-4D20-41C3-9E5B-7EFA69F2F3D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Infrastructure", "src\Infrastructure\Ticketing.Infrastructure\Ticketing.Infrastructure.csproj", "{4A3E6B63-4D20-41C3-9E5B-7EFA69F2F3D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Migrations", "src\Infrastructure\Ticketing.Migrations\Ticketing.Migrations.csproj", "{01A389DC-96B2-4AE0-AC6E-1409C76A3E7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Migrations", "src\Infrastructure\Ticketing.Migrations\Ticketing.Migrations.csproj", "{01A389DC-96B2-4AE0-AC6E-1409C76A3E7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticketing.Shared", "src\Shared\Ticketing.Shared\Ticketing.Shared.csproj", "{C571F537-9793-4115-A952-A269EA243F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticketing.Shared", "src\Shared\Ticketing.Shared\Ticketing.Shared.csproj", "{C571F537-9793-4115-A952-A269EA243F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
