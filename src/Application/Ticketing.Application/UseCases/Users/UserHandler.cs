@@ -29,7 +29,7 @@ public class UserHandler : IUserHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task SignUpAgent(SignUpAgentHandleDto dto)
+    public async Task SignUpAgent(SignUpUserDto dto)
     {
         dto.Mobile = dto.Mobile.NormalizeIranPhoneNumber();
         var hashPass = _passwordHasher.GeneratePassword(dto.Password);
@@ -38,6 +38,34 @@ public class UserHandler : IUserHandler
         {
             var roleId = await _roleService
                 .GetRoleIdByRoleName(SystemRole.Agent);
+            await _userService.Add(new AddUserDto()
+            {
+                FirstName = dto.Name,
+                LastName = dto.LastName,
+                Mobile = dto.Mobile,
+                RoleId = roleId,
+                Password = hashPass
+            });
+
+            await _unitOfWork.Commit();
+
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RoleBack();
+            throw;
+        }
+    }
+
+    public  async Task SignUpClient(SignUpUserDto dto)
+    {
+        dto.Mobile = dto.Mobile.NormalizeIranPhoneNumber();
+        var hashPass = _passwordHasher.GeneratePassword(dto.Password);
+        await _unitOfWork.Begin();
+        try
+        {
+            var roleId = await _roleService
+                .GetRoleIdByRoleName(SystemRole.Client);
             await _userService.Add(new AddUserDto()
             {
                 FirstName = dto.Name,

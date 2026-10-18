@@ -16,9 +16,15 @@ namespace Ticketing.Api.Controllers.Users
         }
 
         [HttpPost("sign-up-agent")]
-        public async Task SignUp([FromBody]SignUpAgentHandleDto dto)
+        public async Task SignUp([FromBody] SignUpUserDto dto)
         {
             await _userHandler.SignUpAgent(dto);
+        }
+
+        [HttpPost("sign-up-client")]
+        public async Task SignUpClient([FromBody] SignUpUserDto dto)
+        {
+            await _userHandler.SignUpClient(dto);
         }
 
     }
