@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 using Ticketing.Application;
 using Ticketing.Application.UseCases.TicketReplies.Contracts;
 using Ticketing.Application.UseCases.TicketReplies.Contracts.Dto;
@@ -32,5 +33,15 @@ public class TicketRepliesController : ControllerBase
 
         var userId = _userTokenService.UserId;
         return await _ticketReplyHandler.ReplyTicketByAgentAsync(dto,userId!);
+    }
+
+
+    [Authorize(Roles =SystemRole.Client)]
+    [HttpPost("reply-by-client")]
+    public async Task<string> ReplyTicketByClient([FromBody] ReplyTicketHandlerDto dto)
+    {
+        var userId = _userTokenService.UserId;
+        return await _ticketReplyHandler.ReplyTicketByClient(dto,userId!);
+
     }
 }

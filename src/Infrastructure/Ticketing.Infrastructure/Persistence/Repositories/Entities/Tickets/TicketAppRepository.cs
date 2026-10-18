@@ -53,7 +53,11 @@ public class TicketAppRepository : ITicketRepository
             }).AsQueryable();
         if (filter != null)
         {
-            query = query.Where(_ => _.Priority == filter.priority);
+            if (filter.priority != null)
+            {
+
+                query = query.Where(_ => _.Priority == filter.priority);
+            }
         }
 
         query = query.OrderByDescending(t => t.CreatedAt);
