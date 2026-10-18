@@ -6,4 +6,5 @@ namespace Ticketing.Application.UseCases.TicketReplies.Contracts;
 public interface ITicketReplyHandler : IService
 {
     Task<string> ReplyTicketByAgentAsync(ReplyTicketHandlerDto dto, string userId);
+    Task<string> ReplyTicketByClient(ReplyTicketHandlerDto dto, string userId);
 }

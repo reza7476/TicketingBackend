@@ -70,6 +70,27 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
     }
 
+    public async Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto)
+    {
+        var ticket = await _repository.FindById(dto.TicketId);
+        if (ticket == null)
+        {
+            throw new TicketNotFoundException();
+        }
+        if (ticket.UserId != dto.UserId)
+        {
+            throw new ClientDoesNotAllowChangeStatusException();
+        }
+
+        if (ticket.Status != TicketStatus.Answered)
+        {
+            throw new ClientDoesNotAllowChangeStatusException();
+        }
+
+        ticket.Status = TicketStatus.InProgress;
+        await _unitOfWork.Complete();
+    }
+
     public async Task ChangeStatusIntoAnswered(string ticketId)
     {
         var ticket = await _repository.FindById(ticketId);

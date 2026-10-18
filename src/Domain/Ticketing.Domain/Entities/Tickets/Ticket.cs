@@ -23,16 +23,16 @@ public class Ticket
 
 public enum Priority
 {
-    Low = 0,
-    Medium = 1,
-    High = 2,
+    Low = 1,
+    Medium = 2,
+    High = 3,
 }
 
 public enum TicketStatus
 {
-    Open = 0,
-    InProgress = 1,
-    Answered = 2,
-    Closed = 3
+    Open = 1,
+    InProgress = 2,
+    Answered = 3,
+    Closed = 4
 }
 
