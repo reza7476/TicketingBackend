@@ -30,20 +30,20 @@ public class TicketAppService : ITicketService
 
     public async Task<string> Add(AddTicketDto dto, string? userId)
     {
-        if(!await _userRepository.ExistById(userId))
+        if (!await _userRepository.ExistById(userId))
         {
             throw new UserNotFoundException();
         }
 
         var ticket = new Ticket()
         {
-            Id=Guid.NewGuid().ToString(),
-            CreatedAt=_dateTimeService.Now,
-            Content=dto.Content,
-            Priority=dto.Priority,
-            Title=dto.Title,
-            Status=TicketStatus.Open,
-            UserId = userId!
+            Id = Guid.NewGuid().ToString(),
+            UserId = userId!,
+            Title = dto.Title,
+            Content = dto.Content,
+            Priority = dto.Priority,
+            Status = TicketStatus.Open,
+            CreatedAt = _dateTimeService.Now,
         };
 
         await _repository.Add(ticket);
