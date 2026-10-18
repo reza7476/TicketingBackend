@@ -1,7 +1,9 @@
 using LawyerExam.Api.Configurations.AutofacSettings;
 using LawyerExam.Api.Configurations.ConnectionStrings;
 using LawyerExam.Api.Configurations.JWT;
+using Microsoft.EntityFrameworkCore;
 using Ticketing.Api.Configurations.SwaggerSettings;
+using Ticketing.Infrastructure.Persistence.DatabaseContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,13 @@ var connectionString = ConnectionStringConfig.GetProjectConnectionString(
     builder.Environment.ContentRootPath);
 
 // Add services to the container.
+
+
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
 
 builder.Services.AddControllers();
 

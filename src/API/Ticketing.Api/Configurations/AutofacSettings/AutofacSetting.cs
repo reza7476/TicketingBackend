@@ -1,5 +1,8 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Ticketing.Application;
+using Ticketing.Infrastructure;
+using Ticketing.Shared;
 
 namespace LawyerExam.Api.Configurations.AutofacSettings;
 public static class AutofacSetting
@@ -22,9 +25,29 @@ public static class AutofacSetting
 
         public AutoFacModule()
         {
-
         }
+        protected override void Load(ContainerBuilder builder)
+        {
+            var applicationAssembly = typeof(ApplicationAssembly).Assembly;
+            var infrastructureAssembly = typeof(InfrastructureAssembly).Assembly;
+            var sharedAssembly = typeof(SharedAssembly).Assembly;
+            var apiAssembly = typeof(AutofacSetting).Assembly;
 
+
+            builder.RegisterAssemblyTypes(
+                applicationAssembly,
+                infrastructureAssembly,
+                sharedAssembly,
+                apiAssembly
+                )
+                .AsSelf()
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+
+
+            base.Load(builder);
+        }
 
     }
 }
