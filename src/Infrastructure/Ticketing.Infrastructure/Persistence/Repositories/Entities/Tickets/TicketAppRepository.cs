@@ -34,6 +34,22 @@ public class TicketAppRepository : ITicketRepository
         return await _tickets.FindAsync(id);
     }
 
+    public async Task<List<Ticket>> GetAllAnsweredTickets()
+    {
+        var twoHoursAgo = DateTime.UtcNow.AddMinutes(-2);
+
+        var query =
+            from ticket in _tickets
+            join reply in _replies
+                on ticket.Id equals reply.TicketId
+            where ticket.Status == TicketStatus.Answered
+            group reply by ticket into repliesGroup
+            where repliesGroup.Max(r => r.CreatedAt) <= twoHoursAgo
+            select repliesGroup.Key;
+
+        return await query.ToListAsync();
+    }
+
     public async Task<IPageResult<GetAllTicketsDto>>
         GetAllForAgent(IPagination? pagination, TicketFilterDto? filter)
     {

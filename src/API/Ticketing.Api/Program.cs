@@ -2,6 +2,8 @@ using LawyerExam.Api.Configurations.AutofacSettings;
 using LawyerExam.Api.Configurations.ConnectionStrings;
 using LawyerExam.Api.Configurations.JWT;
 using Microsoft.EntityFrameworkCore;
+using Ticketing.Api.BackgroundJobs;
+using Ticketing.Api.Configurations.HangfireConfigurations;
 using Ticketing.Api.Configurations.SwaggerSettings;
 using Ticketing.Infrastructure.Persistence.DatabaseContext;
 
@@ -31,6 +33,8 @@ builder.Services.AddSwaggerConfigurationGen();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+builder.Services.HangFireConfigurationService(builder.Environment);
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -39,6 +43,9 @@ var app = builder.Build();
 app.UseSwagger();
 
 app.UseSwaggerUI();
+
+app.UseAppHangfire();
+app.RegisterHangfireRequiringJobs(builder.Environment);
 
 app.UseHttpsRedirection();
 

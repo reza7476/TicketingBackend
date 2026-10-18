@@ -9,6 +9,7 @@ public interface ITicketRepository : IRepository
 {
     Task Add(Ticket ticket);
     Task<Ticket?> FindById(string id);
+    Task<List<Ticket>> GetAllAnsweredTickets();
     Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         IPagination? pagination,
         TicketFilterDto? filter);
