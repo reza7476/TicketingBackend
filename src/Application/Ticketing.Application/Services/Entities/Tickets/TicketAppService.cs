@@ -4,6 +4,7 @@ using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Exceptions;
 using Ticketing.Domain.Entities.Tickets;
 using Ticketing.Shared.Interfaces;
+using Ticketing.Shared.Interfaces.Paginations;
 
 namespace Ticketing.Application.Services.Entities.Tickets;
 
@@ -50,5 +51,12 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
         return ticket.Id;
 
+    }
+
+    public async Task<IPageResult<GetAllTicketsDto>>
+        GetAllForAgent(IPagination? pagination = null,
+        TicketFilterDto? filter = null)
+    {
+        return await _repository.GetAllForAgent(pagination, filter);
     }
 }

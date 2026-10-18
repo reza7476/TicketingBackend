@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Ticketing.Application;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
+using Ticketing.Infrastructure.Persistence.Extensions.Paginations;
+using Ticketing.Shared.Interfaces.Paginations;
 using Ticketing.Shared.JWT;
 
 namespace Ticketing.Api.Controllers.Tickets;
@@ -10,7 +13,7 @@ namespace Ticketing.Api.Controllers.Tickets;
 [ApiController]
 public class TicketsController : ControllerBase
 {
-    private readonly ITicketService  _ticketService;
+    private readonly ITicketService _ticketService;
     private readonly IUserTokenService _userTokenService;
 
 
@@ -29,6 +32,17 @@ public class TicketsController : ControllerBase
     {
 
         var userId = _userTokenService.UserId;
-        return await _ticketService.Add(dto,userId);
+        return await _ticketService.Add(dto, userId);
     }
+
+    [Authorize(Roles = SystemRole.Agent)]
+    [HttpGet("get-all-for-agent")]
+    public async Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
+        [FromQuery] TicketFilterDto? filter = null,
+        [FromQuery] Pagination? pagination = null
+        )
+    {
+        return await _ticketService.GetAllForAgent(pagination,filter);
+    }
+
 }
