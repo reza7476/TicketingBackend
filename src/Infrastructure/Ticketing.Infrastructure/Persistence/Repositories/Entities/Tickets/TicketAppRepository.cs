@@ -29,6 +29,11 @@ public class TicketAppRepository : ITicketRepository
         await _tickets.AddAsync(ticket);
     }
 
+    public async Task<Ticket?> FindById(string id)
+    {
+        return await _tickets.FindAsync(id);
+    }
+
     public async Task<IPageResult<GetAllTicketsDto>>
         GetAllForAgent(IPagination? pagination, TicketFilterDto? filter)
     {

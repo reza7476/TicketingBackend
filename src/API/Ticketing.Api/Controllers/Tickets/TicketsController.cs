@@ -52,5 +52,10 @@ public class TicketsController : ControllerBase
         return await _ticketService.GetDetailsForAgent(id);
     } 
 
-
+    [Authorize(Roles =SystemRole.Agent)]
+    [HttpPatch("change-status-by-agent")]
+    public async Task ChangeStatusByAgent([FromBody] ChangeTicketStatusDto dto)
+    {
+        await _ticketService.ChangeStatusByAgent(dto);
+    }
 }
