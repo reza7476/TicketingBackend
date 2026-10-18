@@ -26,6 +26,11 @@ public class UserAppRepository : IUserRepository
         await _users.AddAsync(user);
     }
 
+    public async Task<bool> ExistById(string? userId)
+    {
+        return await _users.AnyAsync(_ => _.Id == userId);
+    }
+
     public async Task<GetUserInfoForTokenDto?>
         FindByMobileForToken(string mobile)
     {

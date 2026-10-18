@@ -34,6 +34,11 @@ public static class AutofacSetting
             var apiAssembly = typeof(AutofacSetting).Assembly;
 
 
+            builder.RegisterType<HttpContextAccessor>()
+                .As<IHttpContextAccessor>()
+                .SingleInstance();
+
+
             builder.RegisterAssemblyTypes(
                 applicationAssembly,
                 infrastructureAssembly,
