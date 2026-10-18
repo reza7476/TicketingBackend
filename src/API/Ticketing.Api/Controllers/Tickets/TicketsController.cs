@@ -45,4 +45,12 @@ public class TicketsController : ControllerBase
         return await _ticketService.GetAllForAgent(pagination,filter);
     }
 
+    [Authorize(Roles =SystemRole.Agent)]
+    [HttpGet("{id}/for-agent")]
+    public async Task<GetTicketDetailsDto?> GetDetailsForAgent([FromRoute] string id)
+    {
+        return await _ticketService.GetDetailsForAgent(id);
+    } 
+
+
 }

@@ -59,4 +59,9 @@ public class TicketAppService : ITicketService
     {
         return await _repository.GetAllForAgent(pagination, filter);
     }
+
+    public async Task<GetTicketDetailsDto?> GetDetailsForAgent(string id)
+    {
+        return await _repository.GetDetailsForAgent(id);
+    }
 }

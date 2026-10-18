@@ -12,4 +12,5 @@ public interface ITicketRepository : IRepository
     Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         IPagination? pagination,
         TicketFilterDto? filter);
+    Task<GetTicketDetailsDto?> GetDetailsForAgent(string id);
 }

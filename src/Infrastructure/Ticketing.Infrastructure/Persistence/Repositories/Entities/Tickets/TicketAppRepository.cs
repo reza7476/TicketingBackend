@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
+using Ticketing.Domain.Entities.TicketReplies;
 using Ticketing.Domain.Entities.Tickets;
 using Ticketing.Domain.Entities.Users;
 using Ticketing.Infrastructure.Persistence.DatabaseContext;
@@ -14,12 +15,13 @@ public class TicketAppRepository : ITicketRepository
 
     private readonly DbSet<Ticket> _tickets;
     private readonly DbSet<User> _users;
-
+    private readonly DbSet<TicketReply> _replies;
 
     public TicketAppRepository(AppDbContext context)
     {
         _tickets = context.Set<Ticket>();
         _users = context.Set<User>();
+        _replies = context.Set<TicketReply>();
     }
 
     public async Task Add(Ticket ticket)
@@ -44,12 +46,47 @@ public class TicketAppRepository : ITicketRepository
                 Title = ticket.Title,
                 Priority = ticket.Priority
             }).AsQueryable();
-        if(filter != null) 
+        if (filter != null)
         {
             query = query.Where(_ => _.Priority == filter.priority);
         }
 
         query = query.OrderByDescending(t => t.CreatedAt);
         return await query.Paginate(pagination ?? new Pagination());
+    }
+
+    public Task<GetTicketDetailsDto?> GetDetailsForAgent(string id)
+    {
+        var users = _users;
+
+        var query = (
+             from ticket in _tickets
+             join owner in users
+             on ticket.UserId equals owner.Id
+             where ticket.Id == id
+             join reply in _replies
+             on ticket.Id equals reply.TicketId into ticketReplies
+
+             select new GetTicketDetailsDto()
+             {
+                 AskedBy = owner.Mobile,
+                 Content = ticket.Content,
+                 CreatedAt = ticket.CreatedAt,
+                 Priority = ticket.Priority,
+                 Status = ticket.Status,
+                 Title = ticket.Title,
+                 Replies = (
+                    from reply in ticketReplies
+                    join replyUser in users
+                        on reply.UserId equals replyUser.Id
+                    select new TicketRepliedDto
+                    {
+                        RepliedAt = reply.CreatedAt,
+                        RepliedBy = replyUser.Mobile,
+                        Content = reply.Content,
+                        AgentReplied = reply.UserId != ticket.UserId
+                    }).ToList()
+             }).FirstOrDefaultAsync();
+        return query;
     }
 }
