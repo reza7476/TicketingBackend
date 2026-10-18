@@ -7,6 +7,9 @@ namespace Ticketing.Application.Services.Entities.Users.Contracts;
 public interface IUserRepository : IRepository
 {
     Task Add(User user);
-    Task<GetUserInfoForTokenDto?> FindByMobileForToken(string mobile);
+    Task<bool> ExistById(string? userId);
+
+    Task<GetUserInfoForTokenDto?>
+        FindByMobileForToken(string mobile);
     Task<bool> IsExistByMobile(string mobile);
 }
