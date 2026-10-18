@@ -13,4 +13,18 @@ public class SHAPasswordHasher : IPasswordHasher
         var hash = Convert.ToHexString(hashBytes);
         return $"{hash}";
     }
+
+    public Task<bool> Verify(string userPassword, string password)
+    {
+
+        var hashedPass = GeneratePassword(password);
+        if (hashedPass == userPassword)
+        {
+            return Task.FromResult(true);
+        }
+        else
+        {
+            return Task.FromResult(false);
+        }
+    }
 }
