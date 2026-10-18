@@ -21,10 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Securities\" />
     <Folder Include="Persistence\Extensions\" />
-    <Folder Include="Persistence\Repositories\" />
   </ItemGroup>
 
 </Project>

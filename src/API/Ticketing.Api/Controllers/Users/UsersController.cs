@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ticketing.Application.UseCases.Users.Contracts;
+using Ticketing.Application.UseCases.Users.Contracts.Dto;
 
 namespace Ticketing.Api.Controllers.Users
 {
@@ -14,10 +15,10 @@ namespace Ticketing.Api.Controllers.Users
             _userHandler = userHandler;
         }
 
-        [HttpPost("sign-up")]
-        public async Task SignUp(SignUpDto dto)
+        [HttpPost("sign-up-agent")]
+        public async Task SignUp([FromBody]SignUpAgentHandleDto dto)
         {
-            await _userHandler.SignUp(dto);
+            await _userHandler.SignUpAgent(dto);
         }
 
     }

@@ -1,8 +1,9 @@
-﻿using Ticketing.Shared.Interfaces.LifeTimes;
+﻿using Ticketing.Application.UseCases.Users.Contracts.Dto;
+using Ticketing.Shared.Interfaces.LifeTimes;
 
 namespace Ticketing.Application.UseCases.Users.Contracts;
 
 public interface IUserHandler : IService
 {
-    Task SignUp(SignUpDto dto);
+    Task SignUpAgent(SignUpAgentHandleDto dto);
 }
