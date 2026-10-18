@@ -17,10 +17,17 @@ public class AuthenticationsController : ControllerBase
         _authenticationService = authenticationService;
     }
 
-
     [HttpPost("log-in")]
     public async Task<GetJwtTokenDto> Login([FromBody] LoginDto dto)
     {
         return await _authenticationService.Login(dto);
     }
+
+    [HttpDelete]
+    public async Task Delete()
+    {
+
+    }
+
+
 }
