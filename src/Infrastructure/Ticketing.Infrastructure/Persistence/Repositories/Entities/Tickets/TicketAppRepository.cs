@@ -64,6 +64,40 @@ public class TicketAppRepository : ITicketRepository
         return await query.Paginate(pagination ?? new Pagination());
     }
 
+    public async Task<IPageResult<GetAllTicketsDto>> GetAllForClient(
+        string userId,
+        TicketFilterDto? filter,
+        IPagination? pagination)
+    {
+        var query = (
+             from ticket in _tickets
+             join user in _users
+             on ticket.UserId equals user.Id
+             where ticket.UserId == userId
+             select new GetAllTicketsDto()
+             {
+                 AskedBy = user.Mobile,
+                 CreatedAt = ticket.CreatedAt,
+                 Id = ticket.Id,
+                 Status = ticket.Status,
+                 Title = ticket.Title,
+                 Priority = ticket.Priority
+             }).AsQueryable();
+
+        if (filter != null)
+        {
+            if (filter.priority != null)
+            {
+
+                query = query.Where(_ => _.Priority == filter.priority);
+            }
+        }
+
+        query = query.OrderByDescending(t => t.CreatedAt);
+        return await query.Paginate(pagination ?? new Pagination());
+
+    }
+
     public Task<GetTicketDetailsDto?> GetDetailsForAgent(string id)
     {
         var users = _users;

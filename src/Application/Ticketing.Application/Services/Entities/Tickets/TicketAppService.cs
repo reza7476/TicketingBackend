@@ -116,6 +116,16 @@ public class TicketAppService : ITicketService
         return await _repository.GetAllForAgent(pagination, filter);
     }
 
+    public async Task<IPageResult<GetAllTicketsDto>> GetAllForClient(
+        string userId,
+        TicketFilterDto? filter, 
+        IPagination? pagination)
+    {
+
+
+        return await _repository.GetAllForClient(userId,filter, pagination);
+    }
+
     public async Task<GetTicketDetailsDto?> GetDetailsForAgent(string id)
     {
         return await _repository.GetDetailsForAgent(id);
