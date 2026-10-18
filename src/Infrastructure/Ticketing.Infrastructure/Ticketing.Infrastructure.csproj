@@ -20,8 +20,4 @@
     <ProjectReference Include="..\..\Shared\Ticketing.Shared\Ticketing.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistence\Extensions\" />
-  </ItemGroup>
-
 </Project>
