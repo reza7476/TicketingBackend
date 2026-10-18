@@ -130,4 +130,9 @@ public class TicketAppService : ITicketService
     {
         return await _repository.GetDetailsForAgent(id);
     }
+
+    public  async Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId)
+    {
+        return await _repository.GetDetailsForClient(id,userId);
+    }
 }

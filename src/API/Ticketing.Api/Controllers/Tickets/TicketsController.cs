@@ -67,7 +67,15 @@ public class TicketsController : ControllerBase
         )
     {
 
-        var userId=_userTokenService.UserId;
-        return await _ticketService.GetAllForClient(userId!,filter, pagination);
+        var userId = _userTokenService.UserId;
+        return await _ticketService.GetAllForClient(userId!, filter, pagination);
+    }
+
+    [Authorize(Roles = SystemRole.Client)]
+    [HttpGet("{id}/get-for-client")]
+    public async Task<GetTicketDetailsDto?> GetDetailsForClient([FromRoute] string id)
+    {
+        var userId = _userTokenService.UserId;
+        return await _ticketService.GetDetailsForClient(id, userId!);
     }
 }
