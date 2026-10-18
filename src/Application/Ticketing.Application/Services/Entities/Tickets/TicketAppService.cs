@@ -1,5 +1,6 @@
 ﻿using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
+using Ticketing.Application.Services.Entities.Tickets.Exceptions;
 using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Exceptions;
 using Ticketing.Domain.Entities.Tickets;
@@ -51,6 +52,22 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
         return ticket.Id;
 
+    }
+
+    public async Task ChangeStatusByAgent(ChangeTicketStatusDto dto)
+    {
+        var ticket = await _repository.FindById(dto.TicketId);
+        if (ticket == null)
+        {
+            throw new TicketNotFoundException();
+        }
+
+        if (ticket.Status == TicketStatus.Closed)
+        {
+            throw new TicketStatusWasChangedException();
+        }
+        ticket.Status = dto.Status;
+        await _unitOfWork.Complete();
     }
 
     public async Task<IPageResult<GetAllTicketsDto>>

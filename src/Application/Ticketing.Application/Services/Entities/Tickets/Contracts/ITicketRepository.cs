@@ -8,7 +8,7 @@ namespace Ticketing.Application.Services.Entities.Tickets.Contracts;
 public interface ITicketRepository : IRepository
 {
     Task Add(Ticket ticket);
-    
+    Task<Ticket?> FindById(string id);
     Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         IPagination? pagination,
         TicketFilterDto? filter);
