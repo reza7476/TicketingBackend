@@ -70,6 +70,24 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
     }
 
+    public async Task ChangeStatusIntoAnswered(string ticketId)
+    {
+        var ticket = await _repository.FindById(ticketId);
+
+        if (ticket == null)
+        {
+            throw new TicketNotFoundException();
+        }
+
+        if (ticket.Status == TicketStatus.Closed)
+        {
+            throw new TicketStatusWasChangedException();
+        }
+
+        ticket.Status = TicketStatus.Answered;
+        await _unitOfWork.Complete();
+    }
+
     public async Task<IPageResult<GetAllTicketsDto>>
         GetAllForAgent(IPagination? pagination = null,
         TicketFilterDto? filter = null)
