@@ -5,5 +5,6 @@ namespace Ticketing.Application.UseCases.Users.Contracts;
 
 public interface IUserHandler : IService
 {
-    Task SignUpAgent(SignUpAgentHandleDto dto);
+    Task SignUpAgent(SignUpUserDto dto);
+    Task SignUpClient(SignUpUserDto dto);
 }
