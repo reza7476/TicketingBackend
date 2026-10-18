@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ticketing.Application;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
+using Ticketing.Application.UseCases.TicketReplies.Contracts;
 using Ticketing.Infrastructure.Persistence.Extensions.Paginations;
 using Ticketing.Shared.Interfaces.Paginations;
 using Ticketing.Shared.JWT;
@@ -15,7 +16,6 @@ public class TicketsController : ControllerBase
 {
     private readonly ITicketService _ticketService;
     private readonly IUserTokenService _userTokenService;
-
 
     public TicketsController(
         ITicketService ticketService,

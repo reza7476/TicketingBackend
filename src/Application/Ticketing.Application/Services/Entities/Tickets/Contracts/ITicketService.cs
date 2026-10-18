@@ -8,6 +8,7 @@ public interface ITicketService : IService
 {
     Task<string> Add(AddTicketDto dto, string? userId);
     Task ChangeStatusByAgent(ChangeTicketStatusDto dto);
+    Task ChangeStatusIntoAnswered(string ticketId);
     Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         IPagination? pagination=null,
         TicketFilterDto? filter = null);
