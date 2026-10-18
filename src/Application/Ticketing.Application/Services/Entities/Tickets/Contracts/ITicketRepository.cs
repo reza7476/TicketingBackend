@@ -19,4 +19,5 @@ public interface ITicketRepository : IRepository
         IPagination? pagination);
     
     Task<GetTicketDetailsDto?> GetDetailsForAgent(string id);
+    Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId);
 }
