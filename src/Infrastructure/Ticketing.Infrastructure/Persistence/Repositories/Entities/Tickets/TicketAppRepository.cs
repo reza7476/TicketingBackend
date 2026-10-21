@@ -77,7 +77,7 @@ public class TicketAppRepository : ITicketRepository
             }
         }
 
-        query = query.OrderByDescending(t => t.CreatedAt);
+        query = query.OrderBy(t => t.Number);
         return await query.Paginate(pagination ?? new Pagination());
     }
 
@@ -110,7 +110,7 @@ public class TicketAppRepository : ITicketRepository
             }
         }
 
-        query = query.OrderByDescending(t => t.CreatedAt);
+        query = query.OrderBy(t => t.Number);
         return await query.Paginate(pagination ?? new Pagination());
 
     }
