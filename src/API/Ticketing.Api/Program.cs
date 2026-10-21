@@ -3,6 +3,7 @@ using LawyerExam.Api.Configurations.ConnectionStrings;
 using LawyerExam.Api.Configurations.JWT;
 using Microsoft.EntityFrameworkCore;
 using Ticketing.Api.BackgroundJobs;
+using Ticketing.Api.Configurations.HandlerExceptions;
 using Ticketing.Api.Configurations.HangfireConfigurations;
 using Ticketing.Api.Configurations.SwaggerSettings;
 using Ticketing.Infrastructure.Persistence.DatabaseContext;
@@ -40,6 +41,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseCustomExceptionHandler();
 app.UseSwagger();
 
 app.UseSwaggerUI();
