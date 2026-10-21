@@ -16,6 +16,7 @@ namespace Ticketing.Migrations.DbMigrations
                 .WithColumn("Content").AsString().NotNullable()
                 .WithColumn("Priority").AsByte()
                 .WithColumn("Status").AsByte()
+                .WithColumn("Number").AsInt64().Identity()
                 .WithColumn("CreatedAt").AsDateTime2();
         }
 

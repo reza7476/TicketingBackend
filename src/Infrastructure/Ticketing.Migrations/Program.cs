@@ -14,7 +14,7 @@ public static class Program
 
         var runner = CreateRunner(connectionString);
        runner.MigrateUp();
-       //runner.MigrateDown(0);
+      //runner.MigrateDown(0);
 
     }
 

@@ -6,6 +6,7 @@ public class GetAllTicketsDto
 {
     public string Id { get; set; } = default!;
     public string AskedBy { get; set; } = default!;
+    public long Number { get; set; }
     public string Title { get; set; }=default!;
     public TicketStatus Status { get; set; }
     public Priority Priority { get; set; }
