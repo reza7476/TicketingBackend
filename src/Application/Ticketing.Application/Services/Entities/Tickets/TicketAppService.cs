@@ -47,7 +47,7 @@ public class TicketAppService : ITicketService
             Status = TicketStatus.Open,
             CreatedAt = _dateTimeService.Now,
         };
-
+       
         await _repository.Add(ticket);
         await _unitOfWork.Complete();
         return ticket.Id;

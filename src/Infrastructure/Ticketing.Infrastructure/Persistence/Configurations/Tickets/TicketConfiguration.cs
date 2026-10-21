@@ -23,5 +23,11 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
         builder.Property(_=>_.Status).IsRequired();
         
         builder.Property(_ => _.CreatedAt);
+        builder.Property(t => t.Number)
+             .UseIdentityByDefaultColumn()
+             .IsRequired();
+
+        builder.HasIndex(t => t.Number)
+            .IsUnique();
     }
 }

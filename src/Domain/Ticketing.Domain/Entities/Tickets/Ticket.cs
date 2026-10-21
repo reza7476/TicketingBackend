@@ -16,6 +16,7 @@ public class Ticket
     public Priority Priority { get; set; }
     public TicketStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
+    public long Number { get; set; }
     public List<TicketReply> Replies { get; set; }
 
 }
