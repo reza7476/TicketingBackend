@@ -23,11 +23,24 @@ public class AuthenticationsController : ControllerBase
         return await _authenticationService.Login(dto);
     }
 
-    [HttpDelete]
-    public async Task Delete()
+    [HttpPatch("get-guid")]
+    public string  GetGuid()
     {
-
+        return Guid.NewGuid().ToString();
     }
 
 
+    [HttpPatch("{pass}/pass")]
+    public string GetHashPass([FromRoute] string pass)
+    {
+        return _authenticationService.getHashPass(pass);
+    }
+
+
+    [HttpPatch("get-now-utc")]
+    public string GetData()
+    {
+        var a = DateTime.UtcNow.ToString();
+        return a;
+    }
 }
