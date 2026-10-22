@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ticketing.Application.Services.Entities.Organizations.Contracts;
+using Ticketing.Application.Services.Entities.Organizations.Contracts.Dto;
 using Ticketing.Domain.Entities.Organizations;
 using Ticketing.Infrastructure.Persistence.DatabaseContext;
 
@@ -16,11 +17,21 @@ public class OrganizationAppRepository : IOrganizationRepository
 
     public async Task Add(Organization organ)
     {
-        await _organizations.AddAsync(organ);   
+        await _organizations.AddAsync(organ);
     }
 
     public async Task<bool> ExistedByName(string name)
     {
-        return await _organizations.AnyAsync(o=>o.Name == name);
+        return await _organizations.AnyAsync(o => o.Name == name);
+    }
+
+    public async Task<List<GetAllOrganizationDto>> GetAll()
+    {
+        return await _organizations
+            .Select(_ => new GetAllOrganizationDto()
+            {
+                Id = _.Id,
+                Name = _.Name
+            }).ToListAsync();
     }
 }

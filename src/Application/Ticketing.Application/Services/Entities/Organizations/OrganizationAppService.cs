@@ -35,4 +35,9 @@ public class OrganizationAppService : IOrganizationService
         await _unitOfWork.Complete();
         return organ.Id;
     }
+
+    public async Task<List<GetAllOrganizationDto>> GetAll()
+    {
+        return await _repository.GetAll();
+    }
 }
