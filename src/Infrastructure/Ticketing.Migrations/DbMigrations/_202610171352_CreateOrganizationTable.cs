@@ -10,7 +10,8 @@ public class _202610171352_CreateOrganizationTable : Migration
     {
         Create.Table("Organizations")
             .WithColumn("Id").AsString().PrimaryKey().NotNullable()
-            .WithColumn("Name").AsString().NotNullable();
+            .WithColumn("Name").AsString().NotNullable()
+            .WithColumn("IsDefault").AsBoolean();
     }
     public override void Down()
     {

@@ -20,6 +20,11 @@ public class OrganizationAppRepository : IOrganizationRepository
         await _organizations.AddAsync(organ);
     }
 
+    public async Task<bool> ExistedById(string id)
+    {
+        return await _organizations.AnyAsync(_ => _.Id == id);
+    }
+
     public async Task<bool> ExistedByName(string name)
     {
         return await _organizations.AnyAsync(o => o.Name == name);
@@ -31,7 +36,13 @@ public class OrganizationAppRepository : IOrganizationRepository
             .Select(_ => new GetAllOrganizationDto()
             {
                 Id = _.Id,
-                Name = _.Name
+                Name = _.Name,
+                IsDefault=_.IsDefault
             }).ToListAsync();
+    }
+
+    public async Task<Organization?> GetById(string id)
+    {
+        return await _organizations.FirstOrDefaultAsync(_=>_.Id==id);
     }
 }

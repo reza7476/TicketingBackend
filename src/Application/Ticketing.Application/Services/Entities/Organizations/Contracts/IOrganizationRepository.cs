@@ -6,6 +6,8 @@ namespace Ticketing.Application.Services.Entities.Organizations.Contracts;
 public interface IOrganizationRepository : IRepository
 {
     Task Add(Organization organ);
-    Task<bool> ExistedByName(string name);
+    Task<bool> ExistedById(string id);
     Task<List<GetAllOrganizationDto>> GetAll();
+    Task<bool> ExistedByName(string name);
+    Task<Organization?> GetById(string id);
 }

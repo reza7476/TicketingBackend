@@ -5,5 +5,5 @@ namespace Ticketing.Application.Services.Entities.Users.Contracts;
 
 public interface IUserService : IService
 {
-    Task Add(AddUserDto addUserDto);
+    Task<string> Add(AddUserDto addUserDto);
 }

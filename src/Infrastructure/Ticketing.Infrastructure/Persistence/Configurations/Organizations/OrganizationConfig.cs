@@ -13,5 +13,7 @@ public class OrganizationConfig : IEntityTypeConfiguration<Organization>
          
         builder.Property(_ => _.Name).IsRequired();
 
+        builder.Property(_=>_.IsDefault);
+
     }
 }

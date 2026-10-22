@@ -12,6 +12,7 @@ public class Organization
 
     public string Id { get; set; } = default!;
     public string Name { get; set; } = default!;
+    public bool IsDefault { get; set; } = false;
 
     public List<User> Users { get; set; }
 }
