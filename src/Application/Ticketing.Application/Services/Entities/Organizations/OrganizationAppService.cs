@@ -21,15 +21,16 @@ public class OrganizationAppService : IOrganizationService
 
     public async Task<string> Add(AddOrganizationDto dto)
     {
-        if(await _repository.ExistedByName(dto.Name))
+        if (await _repository.ExistedByName(dto.Name))
         {
             throw new OrganizationNameIsDuplicateException();
         }
 
         var organ = new Organization()
         {
+            Id = Guid.NewGuid().ToString(),
             Name = dto.Name,
-            Id = Guid.NewGuid().ToString()
+            IsDefault = dto.IsDefault
         };
         await _repository.Add(organ);
         await _unitOfWork.Complete();

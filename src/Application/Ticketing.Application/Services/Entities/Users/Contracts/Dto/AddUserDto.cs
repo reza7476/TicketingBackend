@@ -7,4 +7,5 @@ public class AddUserDto
     public string Mobile { get; set; } = default!;
     public string RoleId { get; set; } = default!;
     public string Password { get; set; } = default!;
+    public string OrganizationId { get; set; } = default!;
 }
