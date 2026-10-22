@@ -1,4 +1,3 @@
-
 name: Ticketing CI/CD
 
 on:
@@ -38,7 +37,8 @@ jobs:
           tags: |
             ${{ steps.image.outputs.name }}:latest
             ${{ steps.image.outputs.name }}:${{ github.sha }}
-test-ssh:
+
+  test-ssh:
     name: Test SSH connection
     runs-on: ubuntu-latest
     needs: build-and-push
