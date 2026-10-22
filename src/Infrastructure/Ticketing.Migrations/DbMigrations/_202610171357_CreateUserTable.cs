@@ -15,7 +15,15 @@ public class _202610171357_CreateUserTable : Migration
             .WithColumn("LastName").AsString().NotNullable()
             .WithColumn("Mobile").AsString()
             .WithColumn("HashPassword").AsString()
+            .WithColumn("OrganizationId").AsString()
             .WithColumn("CreatedAt").AsDateTime2();
+        Create.ForeignKey("Fk_UserOrganization_Organization")
+            .FromTable("Users")
+            .ForeignColumn("OrganizationId")
+            .ToTable("Organizations")
+            .PrimaryColumn("Id")
+            .OnDelete(System.Data.Rule.None);
+
     }
 
 
