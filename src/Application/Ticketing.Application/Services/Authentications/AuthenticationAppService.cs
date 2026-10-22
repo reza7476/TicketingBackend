@@ -25,6 +25,12 @@ public class AuthenticationAppService : IAuthenticationAppService
         _jwtService = jwtService;
     }
 
+    public string getHashPass(string pass)
+    {
+        return _passHash.GeneratePassword(pass);
+
+    }
+
     public async Task<GetJwtTokenDto> Login(LoginDto dto)
     {
         var userInfo = await _userRepository.FindByMobileForToken(dto.UserName);
