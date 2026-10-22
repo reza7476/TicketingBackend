@@ -25,4 +25,12 @@ public class OrganizationsController : ControllerBase
     {
         return await _organizationService.Add(dto);
     }
+
+
+    [HttpGet("all")]
+    [Authorize(Roles = SystemRole.Administrator)]
+    public async Task<List<GetAllOrganizationDto>> GetAll()
+    {
+        return await _organizationService.GetAll();
+    }
 }
