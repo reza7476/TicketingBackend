@@ -63,4 +63,9 @@ public class OrganizationAppService : IOrganizationService
     {
         return await _repository.GetAll(search);
     }
+
+    public async Task<GetOrganizationDto?> GetDetails(string id)
+    {
+        return await _repository.GetDetails(id);
+    }
 }

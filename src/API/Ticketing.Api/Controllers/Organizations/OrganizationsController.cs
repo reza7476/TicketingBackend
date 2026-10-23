@@ -36,8 +36,15 @@ public class OrganizationsController : ControllerBase
 
     [Authorize(Roles=SystemRole.Administrator)]
     [HttpPut("{id}")]
-    public async Task Edit([FromBody] EditOrganizationDto dto,string id)
+    public async Task Edit([FromBody] EditOrganizationDto dto,[FromRoute]string id)
     {
         await _organizationService.Edit(dto,id);
+    }
+
+    [Authorize(Roles=SystemRole.Administrator)]
+    [HttpGet("{id}")]
+    public async Task<GetOrganizationDto?> GetDetails([FromRoute] string id)
+    {
+        return await _organizationService.GetDetails(id);
     }
 }
