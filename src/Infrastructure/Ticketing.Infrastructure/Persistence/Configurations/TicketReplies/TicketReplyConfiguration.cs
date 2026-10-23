@@ -20,6 +20,10 @@ public class TicketReplyConfiguration : IEntityTypeConfiguration<TicketReply>
 
         builder.Property(_=>_.CreatedAt).IsRequired();
 
+        builder.Property(_ => _.ApprovedByAdmin);
+
+        builder.Property(_ => _.IssuedBy).IsRequired();
+
         builder.HasOne(_=>_.Ticket)
           .WithMany(_=>_.Replies)
           .HasForeignKey(_=>_.TicketId)

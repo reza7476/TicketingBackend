@@ -13,6 +13,8 @@ public class _202610171428_CreateTicketRepliesTable : Migration
             .WithColumn("Id").AsString().PrimaryKey().NotNullable()
             .WithColumn("TicketId").AsString().NotNullable()
             .WithColumn("UserId").AsString().NotNullable()
+            .WithColumn("ApprovedByAdmin").AsBoolean()
+            .WithColumn("IssuedBy").AsString().NotNullable()
             .WithColumn("CreatedAt").AsDateTime2()
             .WithColumn("Content").AsString().NotNullable();
 

@@ -13,7 +13,6 @@ public class _202610220916_CreateTicketAssignmentTable : Migration
             .WithColumn("Id").AsString().PrimaryKey().NotNullable()
             .WithColumn("TicketId").AsString().NotNullable()
             .WithColumn("AssignedToUserId").AsString().NotNullable()
-            .WithColumn("IsApproved").AsBoolean()
             .WithColumn("CreatedAt").AsDateTime2();
 
         Create.ForeignKey("FK_Ticket_TicketAssignment")

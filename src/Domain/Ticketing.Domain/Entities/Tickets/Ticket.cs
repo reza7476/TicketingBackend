@@ -1,4 +1,5 @@
-﻿using Ticketing.Domain.Entities.TicketReplies;
+﻿using Ticketing.Domain.Entities.TicketAssignments;
+using Ticketing.Domain.Entities.TicketReplies;
 
 namespace Ticketing.Domain.Entities.Tickets;
 
@@ -7,6 +8,7 @@ public class Ticket
     public Ticket()
     {
         Replies = new List<TicketReply>();
+        TicketAssignments = new List<TicketAssignment>();
     }
 
     public string Id { get; set; } = default!;
@@ -18,6 +20,7 @@ public class Ticket
     public DateTime CreatedAt { get; set; }
     public long Number { get; set; }
     public List<TicketReply> Replies { get; set; }
+    public List<TicketAssignment> TicketAssignments { get; set; }
 
 }
 
