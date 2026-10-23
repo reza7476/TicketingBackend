@@ -10,4 +10,5 @@ public interface IOrganizationRepository : IRepository
     Task<List<GetAllOrganizationDto>> GetAll(string? search=null);
     Task<bool> ExistedByOrganCode(string organCode);
     Task<Organization?> GetById(string id);
+    Task<bool> IsExistByOrganCode(string id, string organizationCode);
 }

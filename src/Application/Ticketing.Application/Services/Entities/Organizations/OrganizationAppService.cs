@@ -38,7 +38,28 @@ public class OrganizationAppService : IOrganizationService
         return organ.Id;
     }
 
-    public async Task<List<GetAllOrganizationDto>> GetAll(string? search=null)
+    public async Task Edit(EditOrganizationDto dto, string id)
+    {
+        var organ = await _repository.GetById(id);
+        if (organ == null)
+        {
+            throw new OrganizationNotFoundException();
+        }
+
+        if (await _repository.IsExistByOrganCode(id, dto.OrganizationCode))
+        {
+            throw new OrganizationNameIsDuplicateException();
+        }
+
+        organ.OrganizationCode = dto.OrganizationCode;
+        organ.Name = dto.Name;
+        organ.IsDefault = dto.IsDefault;
+
+        await _unitOfWork.Complete();   
+
+    }
+
+    public async Task<List<GetAllOrganizationDto>> GetAll(string? search = null)
     {
         return await _repository.GetAll(search);
     }
