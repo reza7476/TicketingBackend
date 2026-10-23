@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 using Ticketing.Application.Services.Entities.Organizations.Contracts;
 using Ticketing.Application.Services.Entities.Organizations.Contracts.Dto;
 using Ticketing.Domain.Entities.Organizations;
@@ -31,9 +30,9 @@ public class OrganizationAppRepository : IOrganizationRepository
         return await _organizations.AnyAsync(o => o.OrganizationCode == organCode);
     }
 
-    public async Task<List<GetAllOrganizationDto>> GetAll(string? search=null)
+    public async Task<List<GetAllOrganizationDto>> GetAll(string? search = null)
     {
-        var query=  _organizations
+        var query = _organizations
             .Select(_ => new GetAllOrganizationDto()
             {
                 Id = _.Id,
@@ -42,11 +41,11 @@ public class OrganizationAppRepository : IOrganizationRepository
                 OrganizationCode = _.OrganizationCode,
             }).AsQueryable();
 
-        if(search != null)
+        if (search != null)
         {
-            search= search.Trim().ToLower();
-            query=query.Where (s=>
-            s.Name == search||
+            search = search.Trim().ToLower();
+            query = query.Where(s =>
+            s.Name == search ||
             s.OrganizationCode == search
             );
         }
@@ -62,16 +61,18 @@ public class OrganizationAppRepository : IOrganizationRepository
 
     public async Task<GetOrganizationDto?> GetDetails(string id)
     {
-        return await _organizations.Select(_ => new GetOrganizationDto()
-        {
-            IsDefault = _.IsDefault,
-            Name = _.Name,
-            OrganizationCode = _.OrganizationCode,
-        }).FirstOrDefaultAsync();
+        return await _organizations
+            .Where(_ => _.Id == id)
+            .Select(_ => new GetOrganizationDto()
+            {
+                IsDefault = _.IsDefault,
+                Name = _.Name,
+                OrganizationCode = _.OrganizationCode,
+            }).FirstOrDefaultAsync();
     }
 
     public async Task<bool> IsExistByOrganCode(string id, string organizationCode)
     {
-        return await _organizations.AnyAsync(_=>_.Id!=id && _.OrganizationCode==organizationCode);  
+        return await _organizations.AnyAsync(_ => _.Id != id && _.OrganizationCode == organizationCode);
     }
 }
