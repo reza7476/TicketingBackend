@@ -4,5 +4,6 @@ namespace Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 
 public class TicketFilterDto
 {
-    public Priority? priority { get; set; }
+    public Priority? Priority { get; set; }
+    public TicketStatus? Status { get; set; }
 }
