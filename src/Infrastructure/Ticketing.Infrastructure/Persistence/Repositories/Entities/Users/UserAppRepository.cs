@@ -93,6 +93,11 @@ public class UserAppRepository : IUserRepository
                 query = query.Where(_ => _.Organization == filter.Organization);
             }
 
+            if (filter.Role != null)
+            {
+                query = query.Where(_ => _.Role == filter.Role);
+            }
+
         }
         if (search != null)
         {
