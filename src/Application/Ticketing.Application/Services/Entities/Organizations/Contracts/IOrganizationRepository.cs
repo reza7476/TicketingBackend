@@ -7,7 +7,7 @@ public interface IOrganizationRepository : IRepository
 {
     Task Add(Organization organ);
     Task<bool> ExistedById(string id);
-    Task<List<GetAllOrganizationDto>> GetAll();
-    Task<bool> ExistedByName(string name);
+    Task<List<GetAllOrganizationDto>> GetAll(string? search=null);
+    Task<bool> ExistedByOrganCode(string organCode);
     Task<Organization?> GetById(string id);
 }

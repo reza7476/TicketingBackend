@@ -3,4 +3,5 @@ public class AddOrganizationDto
 {
     public string Name { get; set; } = default!;
     public bool IsDefault { get; set; } = false;
+    public string OrganizationCode { get; set; } = default!;
 }
