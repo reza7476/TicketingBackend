@@ -49,11 +49,13 @@ public class TicketsController : ControllerBase
 
 
 
-    [Authorize(Roles = SystemRole.Agent)]
-    [HttpGet("{id}/for-agent")]
-    public async Task<GetTicketDetailsDto?> GetDetailsForAgent([FromRoute] string id)
+    [Authorize(Roles = 
+        SystemRole.Admin+","+
+        SystemRole.Administrator)]
+    [HttpGet("{id}/for-admin")]
+    public async Task<GetTicketDetailsDto?> GetDetailsForAdmin([FromRoute] string id)
     {
-        return await _ticketService.GetDetailsForAgent(id);
+        return await _ticketService.GetDetailsForAmin(id);
     }
 
     [Authorize(Roles = SystemRole.Agent)]

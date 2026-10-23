@@ -19,6 +19,6 @@ public interface ITicketService : IService
         TicketFilterDto? filter,
         IPagination? pagination);
     
-    Task<GetTicketDetailsDto?> GetDetailsForAgent(string id);
+    Task<GetTicketDetailsDto?> GetDetailsForAmin(string id);
     Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId);
 }
