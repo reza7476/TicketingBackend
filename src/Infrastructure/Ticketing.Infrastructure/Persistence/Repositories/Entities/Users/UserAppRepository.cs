@@ -114,9 +114,9 @@ public class UserAppRepository : IUserRepository
         {
             search = search.Trim().ToLower();
             query = query.Where(_ =>
-            _.FirstName.ToLower() == search ||
-            _.LastName.ToLower() == search ||
-            _.Mobile.ToLower() == search
+            _.FirstName.ToLower().Contains(search) ||
+            _.LastName.ToLower().Contains(search) ||
+            _.Mobile.ToLower().Contains(search)
             );
         }
 

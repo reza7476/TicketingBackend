@@ -40,10 +40,11 @@ public class TicketsController : ControllerBase
     [HttpGet("get-all-for-admin")]
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         [FromQuery] TicketFilterDto? filter = null,
-        [FromQuery] Pagination? pagination = null
+        [FromQuery] Pagination? pagination = null,
+        [FromQuery] string? search=null
         )
     {
-        return await _ticketService.GetAllForAgent(pagination, filter);
+        return await _ticketService.GetAllForAdmin(pagination, filter,search);
     }
 
 
