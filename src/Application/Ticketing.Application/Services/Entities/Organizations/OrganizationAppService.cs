@@ -21,7 +21,7 @@ public class OrganizationAppService : IOrganizationService
 
     public async Task<string> Add(AddOrganizationDto dto)
     {
-        if (await _repository.ExistedByName(dto.Name))
+        if (await _repository.ExistedByOrganCode(dto.OrganizationCode))
         {
             throw new OrganizationNameIsDuplicateException();
         }
@@ -30,15 +30,16 @@ public class OrganizationAppService : IOrganizationService
         {
             Id = Guid.NewGuid().ToString(),
             Name = dto.Name,
-            IsDefault = dto.IsDefault
+            IsDefault = dto.IsDefault,
+            OrganizationCode = dto.OrganizationCode,
         };
         await _repository.Add(organ);
         await _unitOfWork.Complete();
         return organ.Id;
     }
 
-    public async Task<List<GetAllOrganizationDto>> GetAll()
+    public async Task<List<GetAllOrganizationDto>> GetAll(string? search=null)
     {
-        return await _repository.GetAll();
+        return await _repository.GetAll(search);
     }
 }

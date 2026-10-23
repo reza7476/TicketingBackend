@@ -29,8 +29,8 @@ public class OrganizationsController : ControllerBase
 
     [HttpGet("all")]
     [Authorize(Roles = SystemRole.Administrator)]
-    public async Task<List<GetAllOrganizationDto>> GetAll()
+    public async Task<List<GetAllOrganizationDto>> GetAll([FromQuery] string? search=null)
     {
-        return await _organizationService.GetAll();
+        return await _organizationService.GetAll(search);
     }
 }

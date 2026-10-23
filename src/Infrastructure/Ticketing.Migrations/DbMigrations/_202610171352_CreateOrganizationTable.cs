@@ -11,7 +11,13 @@ public class _202610171352_CreateOrganizationTable : Migration
         Create.Table("Organizations")
             .WithColumn("Id").AsString().PrimaryKey().NotNullable()
             .WithColumn("Name").AsString().NotNullable()
+            .WithColumn("OrganizationCode").AsString()
             .WithColumn("IsDefault").AsBoolean();
+        Create.Index("UX_Organizations_OrganizationCode")
+            .OnTable("Organizations")
+            .OnColumn("OrganizationCode").Ascending()
+            .WithOptions()
+            .Unique();
     }
     public override void Down()
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using Ticketing.Application.Services.Entities.Organizations.Contracts;
 using Ticketing.Application.Services.Entities.Organizations.Contracts.Dto;
 using Ticketing.Domain.Entities.Organizations;
@@ -25,24 +26,37 @@ public class OrganizationAppRepository : IOrganizationRepository
         return await _organizations.AnyAsync(_ => _.Id == id);
     }
 
-    public async Task<bool> ExistedByName(string name)
+    public async Task<bool> ExistedByOrganCode(string organCode)
     {
-        return await _organizations.AnyAsync(o => o.Name == name);
+        return await _organizations.AnyAsync(o => o.OrganizationCode == organCode);
     }
 
-    public async Task<List<GetAllOrganizationDto>> GetAll()
+    public async Task<List<GetAllOrganizationDto>> GetAll(string? search=null)
     {
-        return await _organizations
+        var query=  _organizations
             .Select(_ => new GetAllOrganizationDto()
             {
                 Id = _.Id,
                 Name = _.Name,
-                IsDefault=_.IsDefault
-            }).ToListAsync();
+                IsDefault = _.IsDefault,
+                OrganizationCode = _.OrganizationCode,
+            }).AsQueryable();
+
+        if(search != null)
+        {
+            search= search.Trim().ToLower();
+            query=query.Where (s=>
+            s.Name == search||
+            s.OrganizationCode == search
+            );
+        }
+
+        return await query.ToListAsync();
+
     }
 
     public async Task<Organization?> GetById(string id)
     {
-        return await _organizations.FirstOrDefaultAsync(_=>_.Id==id);
+        return await _organizations.FirstOrDefaultAsync(_ => _.Id == id);
     }
 }
