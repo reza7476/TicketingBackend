@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Ticketing.Application;
 using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Contracts.Dto;
-using Ticketing.Application.UseCases.Users.Contracts;
-using Ticketing.Application.UseCases.Users.Contracts.Dto;
+using Ticketing.Infrastructure.Persistence.Extensions.Paginations;
+using Ticketing.Shared.Interfaces.Paginations;
 
 namespace Ticketing.Api.Controllers.Users
 {
@@ -21,11 +20,23 @@ namespace Ticketing.Api.Controllers.Users
         }
 
         [HttpPost("add")]
-        [Authorize(Roles=SystemRole.Administrator +","+
+        [Authorize(Roles = SystemRole.Administrator + "," +
             SystemRole.Admin)]
         public async Task<string> Add([FromBody] AddUserDto dto)
         {
             return await _userService.Add(dto);
+        }
+
+        [Authorize(Roles = SystemRole.Administrator)]
+        [HttpGet("all-for-administrator")]
+        public async Task<IPageResult<GetAllUsersDto>> GetAll(
+            [FromQuery] Pagination? pagination = null,
+            [FromQuery] UserFilterDto? filter = null,
+            [FromQuery] string? search = null
+            )
+        {
+            return await _userService
+                .GetAllForAdministrator(pagination, filter, search);
         }
 
     }

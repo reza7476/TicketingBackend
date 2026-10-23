@@ -8,6 +8,7 @@ using Ticketing.Application.Services.Entities.Users.Exceptions;
 using Ticketing.Domain.Entities.UserRoles;
 using Ticketing.Domain.Entities.Users;
 using Ticketing.Shared.Interfaces;
+using Ticketing.Shared.Interfaces.Paginations;
 
 namespace Ticketing.Application.Services.Entities.Users;
 
@@ -86,5 +87,15 @@ public class UserAppService : IUserService
         await _repository.Add(user);
         await _unitOfWork.Complete();
         return user.Id;
+    }
+
+    public async Task<IPageResult<GetAllUsersDto>>
+        GetAllForAdministrator(
+        IPagination? pagination = null,
+        UserFilterDto? filter = null,
+        string? search = null)
+    {
+        return await _repository
+            .GetAllForAdministrator(pagination, filter, search);
     }
 }
