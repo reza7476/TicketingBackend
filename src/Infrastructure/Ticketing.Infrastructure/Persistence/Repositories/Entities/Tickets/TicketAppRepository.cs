@@ -135,7 +135,7 @@ public class TicketAppRepository : ITicketRepository
                  Priority = ticket.Priority,
                  Status = ticket.Status,
                  Title = ticket.Title,
-                 Number = ticket.Number
+                 Number = ticket.Number,
                  Replies = (
                     from reply in ticketReplies
                     join replyUser in users
@@ -171,7 +171,7 @@ public class TicketAppRepository : ITicketRepository
                  Priority = ticket.Priority,
                  Status = ticket.Status,
                  Title = ticket.Title,
-                 Number = ticket.Number
+                 Number = ticket.Number,
                  Replies = (
                     from reply in ticketReplies
                     join replyUser in users
