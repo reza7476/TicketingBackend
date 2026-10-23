@@ -66,7 +66,7 @@ public class TicketAppRepository : ITicketRepository
                 Status = ticket.Status,
                 Title = ticket.Title,
                 Priority = ticket.Priority,
-                Number=ticket.Number,
+                Number = ticket.Number,
             }).AsQueryable();
         if (filter != null)
         {
@@ -135,6 +135,7 @@ public class TicketAppRepository : ITicketRepository
                  Priority = ticket.Priority,
                  Status = ticket.Status,
                  Title = ticket.Title,
+                 Number = ticket.Number,
                  Replies = (
                     from reply in ticketReplies
                     join replyUser in users
@@ -170,6 +171,7 @@ public class TicketAppRepository : ITicketRepository
                  Priority = ticket.Priority,
                  Status = ticket.Status,
                  Title = ticket.Title,
+                 Number = ticket.Number,
                  Replies = (
                     from reply in ticketReplies
                     join replyUser in users

@@ -12,6 +12,7 @@ public class GetTicketDetailsDto
     public string AskedBy { get; set; } = default!;
     public string Title { get; set; } = default!;
 
+    public long Number { get; set; }
     public List<TicketRepliedDto> Replies { get; set; } = new();
 
 }
