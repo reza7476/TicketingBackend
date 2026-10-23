@@ -1,9 +1,16 @@
 ﻿using Ticketing.Application.Services.Entities.Users.Contracts.Dto;
 using Ticketing.Shared.Interfaces.LifeTimes;
+using Ticketing.Shared.Interfaces.Paginations;
 
 namespace Ticketing.Application.Services.Entities.Users.Contracts;
 
 public interface IUserService : IService
 {
     Task<string> Add(AddUserDto addUserDto);
+    
+    Task<IPageResult<GetAllUsersDto>>
+        GetAllForAdministrator(
+        IPagination? pagination=null,
+        UserFilterDto? filter = null,
+        string? search=null);
 }
