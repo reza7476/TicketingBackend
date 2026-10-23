@@ -9,9 +9,9 @@ public class GetTicketDetailsDto
     public TicketStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public Priority Priority { get; set; }
-    public string AskedBy { get; set; } = default!;
+    public string AskedBy { get; set; } = default!;//user mobile
     public string Title { get; set; } = default!;
-
+    public string OwnerOrgan { get; set; } = default!;//user organ
     public long Number { get; set; }
     public List<TicketRepliedDto> Replies { get; set; } = new();
     public List<AssignmentHistoryDto> AssignmentHistory { get; set; } = new();
