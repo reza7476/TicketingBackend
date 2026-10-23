@@ -89,6 +89,46 @@ public class UserAppService : IUserService
         return user.Id;
     }
 
+    public async Task Edit(EditUserDto dto, string id)
+    {
+        var user = await _repository.FindId(id);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        var organ = await _organizationRepository.GetById(dto.OrganizationId);
+        if (organ == null)
+        {
+            throw new OrganizationNotFoundException();
+        }
+
+        dto.Mobile = dto.Mobile.NormalizeIranPhoneNumber();
+        if (await _repository.IsExistByMobileAndId(dto.Mobile, id))
+        {
+            throw new MobileIsDuplicateException();
+        }
+        var role = await _roleRepository.GetById(dto.RoleId);
+        
+        if (role == null)
+        {
+            throw new RoleNotFoundException();
+        }
+        
+        if (role.Title == SystemRole.Client && organ.IsDefault)
+        {
+            throw new SelectedOrganizationIsWrongException();
+        }
+        user.FirstName=dto.FirstName;
+        user.LastName=dto.LastName;
+        user.Mobile= dto.Mobile;
+        user.OrganizationId=dto.OrganizationId;
+        var userRole = await _repository.FindUserRoleByUserId( id);
+        
+        userRole.RoleId=dto.RoleId;
+        await _unitOfWork.Complete();
+    }
+
     public async Task<IPageResult<GetAllUsersDto>>
         GetAllForAdministrator(
         IPagination? pagination = null,

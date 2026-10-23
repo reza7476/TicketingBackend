@@ -58,6 +58,17 @@ public class UserAppRepository : IUserRepository
         return query;
     }
 
+    public async Task<User?> FindId(string id)
+    {
+        return await _users.FindAsync(id);
+    }
+
+    public async Task<UserRole> FindUserRoleByUserId(string id)
+    {
+        return await _userRoles
+            .FirstAsync(_ => _.UserId == id);
+    }
+
     public async Task<IPageResult<GetAllUsersDto>>
         GetAllForAdministrator(
          IPagination? pagination = null,
@@ -117,28 +128,52 @@ public class UserAppRepository : IUserRepository
     public async Task<GetUserDetailsDto?> GetDetails(string id)
     {
         return await (from user in _users
-                     join organ in _organs
-                        on user.OrganizationId equals organ.Id
-                     join ur in _userRoles
-                        on user.Id equals ur.UserId into userRoles
-                        from userRole in userRoles.DefaultIfEmpty()
-                     join r in _roles
-                       on userRole.RoleId equals r.Id into roles
-                       from role in roles
-                     where user.Id == id
-                     select new GetUserDetailsDto()
-                     {
-                         FirstName = user.FirstName,
-                         LastName = user.LastName,
-                         Mobile = user.Mobile,
-                         Organization = organ.Name,
-                         Role = role != null ? role.Title : null
-                     }).FirstOrDefaultAsync();
-       
+                      join organ in _organs
+                         on user.OrganizationId equals organ.Id
+                      join ur in _userRoles
+                         on user.Id equals ur.UserId into userRoles
+                      from userRole in userRoles.DefaultIfEmpty()
+                      join r in _roles
+                        on userRole.RoleId equals r.Id into roles
+                      from role in roles
+                      where user.Id == id
+                      select new GetUserDetailsDto()
+                      {
+                          FirstName = user.FirstName,
+                          LastName = user.LastName,
+                          Mobile = user.Mobile,
+                          Organization = organ.Name,
+                          Role = role != null ? role.Title : null
+                      }).FirstOrDefaultAsync();
+
+    }
+
+    public async Task<string?> GetUserRole(string id)
+    {
+        return await (from user in _users
+                      join userRole in _userRoles
+                         on user.Id equals userRole.UserId into userRoles
+                      from ur in userRoles.DefaultIfEmpty()
+                      join r in _roles
+                          on ur.RoleId equals r.Id into roles
+                      from role in roles.DefaultIfEmpty()
+                      where user.Id == id
+                      select role.Title
+                   ).FirstOrDefaultAsync();
     }
 
     public async Task<bool> IsExistByMobile(string mobile)
     {
         return await _users.AnyAsync(_ => _.Mobile == mobile);
+    }
+
+    public async Task<bool> IsExistByMobileAndId(string mobile, string id)
+    {
+        return await _users.AnyAsync(_ => _.Mobile == mobile && _.Id != id);
+    }
+
+    public async Task<bool> UserHasAgentRole(string id, string? roleId)
+    {
+        return await _userRoles.AnyAsync(_ => _.UserId == id && _.RoleId == roleId);
     }
 }

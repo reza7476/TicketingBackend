@@ -7,7 +7,7 @@ namespace Ticketing.Application.Services.Entities.Users.Contracts;
 public interface IUserService : IService
 {
     Task<string> Add(AddUserDto addUserDto);
-    
+    Task Edit(EditUserDto dto, string id);
     Task<IPageResult<GetAllUsersDto>>
         GetAllForAdministrator(
         IPagination? pagination=null,
