@@ -39,5 +39,14 @@ namespace Ticketing.Api.Controllers.Users
                 .GetAllForAdministrator(pagination, filter, search);
         }
 
+        [HttpGet("{id}/details")]
+        [Authorize(Roles =
+            SystemRole.Administrator + "," +
+            SystemRole.Admin)]
+        public async Task<GetUserDetailsDto?> GetDetails([FromRoute] string id)
+        {
+            return await _userService.GetDetails(id);
+        }
+
     }
 }

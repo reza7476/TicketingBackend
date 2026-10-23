@@ -98,4 +98,9 @@ public class UserAppService : IUserService
         return await _repository
             .GetAllForAdministrator(pagination, filter, search);
     }
+
+    public async Task<GetUserDetailsDto?> GetDetails(string id)
+    {
+        return await _repository.GetDetails(id);
+    }
 }

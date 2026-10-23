@@ -114,6 +114,29 @@ public class UserAppRepository : IUserRepository
 
     }
 
+    public async Task<GetUserDetailsDto?> GetDetails(string id)
+    {
+        return await (from user in _users
+                     join organ in _organs
+                        on user.OrganizationId equals organ.Id
+                     join ur in _userRoles
+                        on user.Id equals ur.UserId into userRoles
+                        from userRole in userRoles.DefaultIfEmpty()
+                     join r in _roles
+                       on userRole.RoleId equals r.Id into roles
+                       from role in roles
+                     where user.Id == id
+                     select new GetUserDetailsDto()
+                     {
+                         FirstName = user.FirstName,
+                         LastName = user.LastName,
+                         Mobile = user.Mobile,
+                         Organization = organ.Name,
+                         Role = role != null ? role.Title : null
+                     }).FirstOrDefaultAsync();
+       
+    }
+
     public async Task<bool> IsExistByMobile(string mobile)
     {
         return await _users.AnyAsync(_ => _.Mobile == mobile);

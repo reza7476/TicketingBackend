@@ -13,4 +13,5 @@ public interface IUserService : IService
         IPagination? pagination=null,
         UserFilterDto? filter = null,
         string? search=null);
+    Task<GetUserDetailsDto?> GetDetails(string id);
 }

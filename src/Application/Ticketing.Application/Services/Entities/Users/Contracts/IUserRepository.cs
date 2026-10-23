@@ -18,6 +18,6 @@ public interface IUserRepository : IRepository
         IPagination? pagination, 
         UserFilterDto? filter,
         string? search);
-    
+    Task<GetUserDetailsDto?> GetDetails(string id);
     Task<bool> IsExistByMobile(string mobile);
 }
