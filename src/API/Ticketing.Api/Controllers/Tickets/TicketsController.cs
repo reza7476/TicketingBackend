@@ -25,7 +25,7 @@ public class TicketsController : ControllerBase
     }
 
 
-    [Authorize]
+    [Authorize(Roles = SystemRole.Client)]
     [HttpPost("add")]
     public async Task<string> Add([FromBody] AddTicketDto dto)
     {
@@ -34,8 +34,10 @@ public class TicketsController : ControllerBase
         return await _ticketService.Add(dto, userId);
     }
 
-    [Authorize(Roles = SystemRole.Agent)]
-    [HttpGet("get-all-for-agent")]
+    [Authorize(Roles =
+        SystemRole.Admin + "," +
+        SystemRole.Administrator)]
+    [HttpGet("get-all-for-admin")]
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         [FromQuery] TicketFilterDto? filter = null,
         [FromQuery] Pagination? pagination = null
@@ -43,6 +45,8 @@ public class TicketsController : ControllerBase
     {
         return await _ticketService.GetAllForAgent(pagination, filter);
     }
+
+
 
     [Authorize(Roles = SystemRole.Agent)]
     [HttpGet("{id}/for-agent")]
