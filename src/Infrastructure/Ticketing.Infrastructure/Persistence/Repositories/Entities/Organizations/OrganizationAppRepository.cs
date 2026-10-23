@@ -60,6 +60,16 @@ public class OrganizationAppRepository : IOrganizationRepository
         return await _organizations.FirstOrDefaultAsync(_ => _.Id == id);
     }
 
+    public async Task<GetOrganizationDto?> GetDetails(string id)
+    {
+        return await _organizations.Select(_ => new GetOrganizationDto()
+        {
+            IsDefault = _.IsDefault,
+            Name = _.Name,
+            OrganizationCode = _.OrganizationCode,
+        }).FirstOrDefaultAsync();
+    }
+
     public async Task<bool> IsExistByOrganCode(string id, string organizationCode)
     {
         return await _organizations.AnyAsync(_=>_.Id!=id && _.OrganizationCode==organizationCode);  
