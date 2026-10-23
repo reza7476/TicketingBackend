@@ -1,4 +1,5 @@
 ﻿using Ticketing.Application.Services.Entities.Roles.Contracts;
+using Ticketing.Application.Services.Entities.Roles.Contracts.Dto;
 using Ticketing.Domain.Entities.Roles;
 using Ticketing.Shared.Interfaces;
 
@@ -16,6 +17,11 @@ public class RoleAppService : IRoleService
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
+    }
+
+    public async Task<List<GetAllRolesDto>> GetAll()
+    {
+        return await _repository.GetAll();
     }
 
     public async Task<string> GetRoleIdByRoleName(string roleName)

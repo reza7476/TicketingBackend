@@ -66,9 +66,9 @@ public class TicketsController : ControllerBase
         [FromQuery] Pagination? pagination = null
         )
     {
-
         var userId = _userTokenService.UserId;
         return await _ticketService.GetAllForClient(userId!, filter, pagination);
+
     }
 
     [Authorize(Roles = SystemRole.Client)]

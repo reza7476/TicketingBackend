@@ -6,5 +6,6 @@ namespace Ticketing.Application.Services.Authentications.Contracts;
 
 public interface IAuthenticationAppService : IService
 {
+    string getHashPass(string pass);
     Task<GetJwtTokenDto> Login(LoginDto dto);
 }

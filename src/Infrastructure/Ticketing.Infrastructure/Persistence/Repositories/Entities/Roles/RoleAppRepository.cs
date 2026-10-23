@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ticketing.Application.Services.Entities.Roles.Contracts;
+using Ticketing.Application.Services.Entities.Roles.Contracts.Dto;
 using Ticketing.Domain.Entities.Roles;
 using Ticketing.Infrastructure.Persistence.DatabaseContext;
 
@@ -20,11 +21,30 @@ public class RoleAppRepository : IRoleRepository
         await _roles.AddAsync(newRole);
     }
 
+    public async Task<bool> ExistedById(string id)
+    {
+       return await _roles.AnyAsync(_=>_.Id==id);
+    }
+
+    public async Task<List<GetAllRolesDto>> GetAll()
+    {
+        return await _roles.Select(_ => new GetAllRolesDto()
+        {
+            Id = _.Id,
+            Title = _.Title
+        }).ToListAsync();
+    }
+
+    public async Task<Role?> GetById(string roleId)
+    {
+        return await _roles.FirstOrDefaultAsync(_=>_.Id== roleId);  
+    }
+
     public async Task<string?> GetRoleIdByRoleName(string roleName)
     {
         return await _roles
-            .Where(_=>_.Title==roleName)
-            .Select(_=>_.Id)
+            .Where(_ => _.Title == roleName)
+            .Select(_ => _.Id)
             .FirstOrDefaultAsync();
     }
 }

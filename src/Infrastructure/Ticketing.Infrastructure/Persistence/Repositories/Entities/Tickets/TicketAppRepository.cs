@@ -98,14 +98,14 @@ public class TicketAppRepository : ITicketRepository
                  Id = ticket.Id,
                  Status = ticket.Status,
                  Title = ticket.Title,
-                 Priority = ticket.Priority
+                 Priority = ticket.Priority,
+                 Number=ticket.Number,
              }).AsQueryable();
 
         if (filter != null)
         {
             if (filter.priority != null)
             {
-
                 query = query.Where(_ => _.Priority == filter.priority);
             }
         }

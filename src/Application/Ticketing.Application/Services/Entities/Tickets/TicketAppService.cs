@@ -121,8 +121,6 @@ public class TicketAppService : ITicketService
         TicketFilterDto? filter, 
         IPagination? pagination)
     {
-
-
         return await _repository.GetAllForClient(userId,filter, pagination);
     }
 
