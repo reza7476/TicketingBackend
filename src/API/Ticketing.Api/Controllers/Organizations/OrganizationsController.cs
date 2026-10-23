@@ -33,4 +33,11 @@ public class OrganizationsController : ControllerBase
     {
         return await _organizationService.GetAll(search);
     }
+
+    [Authorize(Roles=SystemRole.Administrator)]
+    [HttpPut("{id}")]
+    public async Task Edit([FromBody] EditOrganizationDto dto,string id)
+    {
+        await _organizationService.Edit(dto,id);
+    }
 }
