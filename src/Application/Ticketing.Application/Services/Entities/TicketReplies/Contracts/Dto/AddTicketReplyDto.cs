@@ -3,7 +3,6 @@
 public class AddTicketReplyDto
 {
     public string TicketId { get; set; } = default!;
-    public string UserId { get; set; } = default!;
     public string Content { get; set; } = default!;
 
 

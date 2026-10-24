@@ -5,5 +5,9 @@ namespace Ticketing.Application.Services.Entities.TicketReplies.Contracts;
 
 public interface ITicketReplyService : IService
 {
-    Task<string> AddReply(AddTicketReplyDto dto);
+    Task<string> Add(
+        AddTicketReplyDto dto,
+        string userId,
+        string userRole);
+    Task Edit(string id, EditTicketReplyDto dto);
 }
