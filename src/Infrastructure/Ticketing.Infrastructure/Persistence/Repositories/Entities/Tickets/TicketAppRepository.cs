@@ -33,6 +33,11 @@ public class TicketAppRepository : ITicketRepository
         await _tickets.AddAsync(ticket);
     }
 
+    public async Task AddTicketAssignment(TicketAssignment assignment)
+    {
+        await _assignments.AddAsync(assignment);
+    }
+
     public async Task<Ticket?> FindById(string id)
     {
         return await _tickets.FindAsync(id);
@@ -94,6 +99,11 @@ public class TicketAppRepository : ITicketRepository
 
         query = query.OrderBy(t => t.Number);
         return await query.Paginate(pagination ?? new Pagination());
+    }
+
+    public Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(IPagination? pagination, TicketFilterDto? filter)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForClient(
