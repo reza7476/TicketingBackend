@@ -29,7 +29,6 @@ public class TicketsController : ControllerBase
         _assignHandler = assignHandler;
     }
 
-
     [Authorize(Roles = SystemRole.Client)]
     [HttpPost("add")]
     public async Task<string> Add([FromBody] AddTicketDto dto)
