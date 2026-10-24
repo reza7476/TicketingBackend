@@ -109,11 +109,12 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
     }
 
-    public async Task<IPageResult<GetAllTicketsDto>>
-        GetAllForAgent(IPagination? pagination = null,
-        TicketFilterDto? filter = null)
+    public async Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
+        IPagination? pagination = null,
+        TicketFilterDto? filter = null,
+        string? search = null)
     {
-        return await _repository.GetAllForAgent(pagination, filter);
+        return await _repository.GetAllForAdmin(pagination, filter,search);
     }
 
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForClient(

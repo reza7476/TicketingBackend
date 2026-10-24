@@ -10,10 +10,12 @@ public interface ITicketService : IService
     Task ChangeStatusByAgent(ChangeTicketStatusDto dto);
     Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto);
     Task ChangeStatusIntoAnswered(string ticketId);
+   
     Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
         IPagination? pagination = null,
         TicketFilterDto? filter = null,
         string? search = null);
+  
     Task<IPageResult<GetAllTicketsDto>> GetAllForClient(
         string userId,
         TicketFilterDto? filter,
