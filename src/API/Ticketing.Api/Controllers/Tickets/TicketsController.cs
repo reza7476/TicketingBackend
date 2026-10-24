@@ -41,16 +41,16 @@ public class TicketsController : ControllerBase
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
         [FromQuery] TicketFilterDto? filter = null,
         [FromQuery] Pagination? pagination = null,
-        [FromQuery] string? search=null
+        [FromQuery] string? search = null
         )
     {
-        return await _ticketService.GetAllForAdmin(pagination, filter,search);
+        return await _ticketService.GetAllForAdmin(pagination, filter, search);
     }
 
 
 
-    [Authorize(Roles = 
-        SystemRole.Admin+","+
+    [Authorize(Roles =
+        SystemRole.Admin + "," +
         SystemRole.Administrator)]
     [HttpGet("{id}/for-admin")]
     public async Task<GetTicketDetailsDto?> GetDetailsForAdmin([FromRoute] string id)

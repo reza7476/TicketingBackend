@@ -55,7 +55,9 @@ public class TicketAppRepository : ITicketRepository
     }
 
     public async Task<IPageResult<GetAllTicketsDto>>
-        GetAllForAgent(IPagination? pagination, TicketFilterDto? filter)
+        GetAllForAdmin(IPagination? pagination = null,
+        TicketFilterDto? filter = null,
+        string? search = null)
     {
         var query = (
 
@@ -74,11 +76,20 @@ public class TicketAppRepository : ITicketRepository
             }).AsQueryable();
         if (filter != null)
         {
-            if (filter.priority != null)
+            if (filter.Priority != null)
             {
-
-                query = query.Where(_ => _.Priority == filter.priority);
+                query = query.Where(_ => _.Priority == filter.Priority);
             }
+            if (filter.Status != null)
+            {
+                query = query.Where(_ => _.Status == filter.Status);
+            }
+
+        }
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            search = search.ToLower().Trim();
+            query = query.Where(_ => _.AskedBy.ToLower().Contains(search));
         }
 
         query = query.OrderBy(t => t.Number);
@@ -103,14 +114,14 @@ public class TicketAppRepository : ITicketRepository
                  Status = ticket.Status,
                  Title = ticket.Title,
                  Priority = ticket.Priority,
-                 Number=ticket.Number,
+                 Number = ticket.Number,
              }).AsQueryable();
 
         if (filter != null)
         {
-            if (filter.priority != null)
+            if (filter.Priority != null)
             {
-                query = query.Where(_ => _.Priority == filter.priority);
+                query = query.Where(_ => _.Priority == filter.Priority);
             }
         }
 
