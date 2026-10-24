@@ -38,6 +38,45 @@ public class TicketAppRepository : ITicketRepository
         return await _tickets.FindAsync(id);
     }
 
+    public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
+        string userId, 
+        IPagination? pagination, 
+        TicketFilterDto? filter)
+    {
+        var query = (from assign in _assignments
+                     join ticket in _tickets
+                     on assign.TicketId equals ticket.Id
+                     join user in _users
+                     on assign.AssignedToUserId equals user.Id
+                     where assign.AssignedToUserId == userId
+                     select new GetAllAgentTicketsDto()
+                     {
+                         AskedBy=user.Mobile,
+                         Id=ticket.Id,
+                         AssignedAt=assign.CreatedAt,
+                         CreatedAt=ticket.CreatedAt,
+                         Number=ticket.Number,
+                         Priority=ticket.Priority,
+                         Status=ticket.Status,
+                         Title = ticket.Title
+                     }).AsQueryable();
+
+        if(filter != null)
+        {
+            if (filter.Priority != null)
+            {
+                query = query.Where(_ => _.Priority == filter.Priority);
+            }
+            if (filter.Status != null)
+            {
+                query = query.Where(_ => _.Status == filter.Status);
+            }
+        }
+        query = query.OrderBy(t => t.Number);
+        return await query.Paginate(pagination ?? new Pagination());
+
+    }
+
     public async Task<List<Ticket>> GetAllAnsweredTickets()
     {
         var twoHoursAgo = DateTime.UtcNow.AddMinutes(-2);

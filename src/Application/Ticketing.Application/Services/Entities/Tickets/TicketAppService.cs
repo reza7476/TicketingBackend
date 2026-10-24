@@ -3,7 +3,6 @@ using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 using Ticketing.Application.Services.Entities.Tickets.Exceptions;
 using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Exceptions;
-using Ticketing.Domain.Entities.TicketAssignments;
 using Ticketing.Domain.Entities.Tickets;
 using Ticketing.Shared.Interfaces;
 using Ticketing.Shared.Interfaces.Paginations;
@@ -17,7 +16,7 @@ public class TicketAppService : ITicketService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTimeService;
     private readonly IUserRepository _userRepository;
-    
+
 
     public TicketAppService(
         ITicketRepository repository,
@@ -48,12 +47,18 @@ public class TicketAppService : ITicketService
             Status = TicketStatus.Open,
             CreatedAt = _dateTimeService.Now,
         };
-       
+
         await _repository.Add(ticket);
         await _unitOfWork.Complete();
         return ticket.Id;
 
     }
+
+    public Task AssignToAgent(AssignTicketToAgentDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task ChangeStatusByAgent(ChangeTicketStatusDto dto)
     {
         var ticket = await _repository.FindById(dto.TicketId);
@@ -112,7 +117,7 @@ public class TicketAppService : ITicketService
     public async Task ChangeStatusIntoInProgress(string id)
     {
         var ticket = await _repository.FindById(id);
-        if(ticket == null)
+        if (ticket == null)
         {
             throw new TicketNotFoundException();
         }
@@ -120,8 +125,16 @@ public class TicketAppService : ITicketService
         {
             throw new TicketStatusWasChangedException();
         }
-        ticket.Status=TicketStatus.InProgress;
+        ticket.Status = TicketStatus.InProgress;
         await _unitOfWork.Complete();
+    }
+
+    public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
+        string userId,
+        IPagination? pagination,
+        TicketFilterDto? filter)
+    {
+        return await _repository.GetAllAgentTickets(userId, pagination, filter);
     }
 
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
@@ -129,15 +142,15 @@ public class TicketAppService : ITicketService
         TicketFilterDto? filter = null,
         string? search = null)
     {
-        return await _repository.GetAllForAdmin(pagination, filter,search);
+        return await _repository.GetAllForAdmin(pagination, filter, search);
     }
 
     public async Task<IPageResult<GetAllTicketsDto>> GetAllForClient(
         string userId,
-        TicketFilterDto? filter, 
+        TicketFilterDto? filter,
         IPagination? pagination)
     {
-        return await _repository.GetAllForClient(userId,filter, pagination);
+        return await _repository.GetAllForClient(userId, filter, pagination);
     }
 
     public async Task<GetTicketDetailsDto?> GetDetailsForAmin(string id)
@@ -145,8 +158,8 @@ public class TicketAppService : ITicketService
         return await _repository.GetDetailsForAdmin(id);
     }
 
-    public  async Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId)
+    public async Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId)
     {
-        return await _repository.GetDetailsForClient(id,userId);
+        return await _repository.GetDetailsForClient(id, userId);
     }
 }

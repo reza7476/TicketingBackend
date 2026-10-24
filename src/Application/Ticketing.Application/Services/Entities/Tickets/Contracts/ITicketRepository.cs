@@ -9,6 +9,12 @@ public interface ITicketRepository : IRepository
 {
     Task Add(Ticket ticket);
     Task<Ticket?> FindById(string id);
+
+    Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
+        string userId,
+        IPagination? pagination,
+        TicketFilterDto? filter);
+
     Task<List<Ticket>> GetAllAnsweredTickets();
     Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
         IPagination? pagination = null,
