@@ -8,7 +8,6 @@ public interface ITicketService : IService
 {
     Task<string> Add(AddTicketDto dto, string? userId);
     Task AssignToAgent(AssignTicketToAgentDto dto);
-    Task ChangeStatusByAgent(ChangeTicketStatusDto dto);
     Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto);
     Task ChangeStatusIntoAnswered(string ticketId);
     Task ChangeStatusIntoInProgress(string ticketId);
@@ -25,7 +24,7 @@ public interface ITicketService : IService
         string userId,
         TicketFilterDto? filter,
         IPagination? pagination);
-    
+    Task<GetTicketDetailsForAgentDto?> GetDetailsForAgent(string id);
     Task<GetTicketDetailsDto?> GetDetailsForAmin(string id);
     Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId);
 }

@@ -227,6 +227,45 @@ public class TicketAppRepository : ITicketRepository
         return query;
     }
 
+    public async Task<GetTicketDetailsForAgentDto?> 
+        GetDetailsForAgent(string id)
+    {
+        var users = _users;
+        var query = await (
+        from ticket in _tickets
+        join user in users
+            on ticket.UserId equals user.Id
+        where ticket.Id == id
+        select new GetTicketDetailsForAgentDto
+        {
+            AskedBy = user.Mobile,
+            Content = ticket.Content,
+            CreatedAt = ticket.CreatedAt,
+            Priority = ticket.Priority,
+            Status = ticket.Status,
+            Title = ticket.Title,
+
+            Replies = (
+                from reply in _replies
+                join replyUser in users
+                    on reply.UserId equals replyUser.Id
+                where reply.TicketId == ticket.Id
+                orderby reply.CreatedAt
+                select new TicketRepliesDto
+                {
+                    Id = reply.Id,
+                    Mobile = replyUser.Mobile,
+                    Content = reply.Content,
+                    IssuedBy = reply.IssuedBy,
+                    CreatedAt = reply.CreatedAt,
+                    ApprovedByAdmin = reply.ApprovedByAdmin
+                }
+            ).ToList()
+        }).FirstOrDefaultAsync();
+
+        return query;
+    }
+
     public Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId)
     {
         var users = _users;
