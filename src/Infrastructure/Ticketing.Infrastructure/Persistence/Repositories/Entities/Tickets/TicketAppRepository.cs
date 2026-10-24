@@ -33,11 +33,6 @@ public class TicketAppRepository : ITicketRepository
         await _tickets.AddAsync(ticket);
     }
 
-    public async Task AddTicketAssignment(TicketAssignment assignment)
-    {
-        await _assignments.AddAsync(assignment);
-    }
-
     public async Task<Ticket?> FindById(string id)
     {
         return await _tickets.FindAsync(id);

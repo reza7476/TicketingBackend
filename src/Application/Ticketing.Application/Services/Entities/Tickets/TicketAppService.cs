@@ -54,43 +54,6 @@ public class TicketAppService : ITicketService
         return ticket.Id;
 
     }
-
-    public async Task AssignToAgent(AssignTicketToAgentDto dto)
-    {
-        var ticket = await _repository.FindById(dto.TicketId);
-        if(ticket == null) 
-        {
-            throw new TicketNotFoundException();
-        }
-        if(ticket.Status== TicketStatus.Closed) 
-        {
-            throw new TicketAlreadyHasBeenClosedException(); 
-        }
-
-        var assignment = new TicketAssignment()
-        {
-            AssignedToUserId=dto.AgentId,
-            CreatedAt= _dateTimeService.Now,
-            Id=Guid.NewGuid().ToString(),
-            TicketId=dto.TicketId   
-        };
-        await _unitOfWork.Begin();
-        try
-        {
-            await _repository.AddTicketAssignment(assignment);
-            ticket.Status = TicketStatus.InProgress;
-            await _unitOfWork.Complete();
-        }
-        catch (Exception)
-        {
-            await _unitOfWork.RoleBack();
-            throw;
-        }
-        
-
-        throw new NotImplementedException();
-    }
-
     public async Task ChangeStatusByAgent(ChangeTicketStatusDto dto)
     {
         var ticket = await _repository.FindById(dto.TicketId);
@@ -143,6 +106,21 @@ public class TicketAppService : ITicketService
         }
 
         ticket.Status = TicketStatus.Answered;
+        await _unitOfWork.Complete();
+    }
+
+    public async Task ChangeStatusIntoInProgress(string id)
+    {
+        var ticket = await _repository.FindById(id);
+        if(ticket == null)
+        {
+            throw new TicketNotFoundException();
+        }
+        if (ticket.Status == TicketStatus.Closed)
+        {
+            throw new TicketStatusWasChangedException();
+        }
+        ticket.Status=TicketStatus.InProgress;
         await _unitOfWork.Complete();
     }
 
