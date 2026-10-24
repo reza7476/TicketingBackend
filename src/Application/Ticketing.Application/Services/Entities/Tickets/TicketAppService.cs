@@ -3,6 +3,7 @@ using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 using Ticketing.Application.Services.Entities.Tickets.Exceptions;
 using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Exceptions;
+using Ticketing.Domain.Entities.TicketAssignments;
 using Ticketing.Domain.Entities.Tickets;
 using Ticketing.Shared.Interfaces;
 using Ticketing.Shared.Interfaces.Paginations;
@@ -16,7 +17,7 @@ public class TicketAppService : ITicketService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeService _dateTimeService;
     private readonly IUserRepository _userRepository;
-
+    
 
     public TicketAppService(
         ITicketRepository repository,
@@ -52,6 +53,42 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
         return ticket.Id;
 
+    }
+
+    public async Task AssignToAgent(AssignTicketToAgentDto dto)
+    {
+        var ticket = await _repository.FindById(dto.TicketId);
+        if(ticket == null) 
+        {
+            throw new TicketNotFoundException();
+        }
+        if(ticket.Status== TicketStatus.Closed) 
+        {
+            throw new TicketAlreadyHasBeenClosedException(); 
+        }
+
+        var assignment = new TicketAssignment()
+        {
+            AssignedToUserId=dto.AgentId,
+            CreatedAt= _dateTimeService.Now,
+            Id=Guid.NewGuid().ToString(),
+            TicketId=dto.TicketId   
+        };
+        await _unitOfWork.Begin();
+        try
+        {
+            await _repository.AddTicketAssignment(assignment);
+            ticket.Status = TicketStatus.InProgress;
+            await _unitOfWork.Complete();
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RoleBack();
+            throw;
+        }
+        
+
+        throw new NotImplementedException();
     }
 
     public async Task ChangeStatusByAgent(ChangeTicketStatusDto dto)

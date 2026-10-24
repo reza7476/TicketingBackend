@@ -85,4 +85,12 @@ public class TicketsController : ControllerBase
         var userId = _userTokenService.UserId;
         return await _ticketService.GetDetailsForClient(id, userId!);
     }
+
+    [Authorize(Roles=SystemRole.Admin+","+
+        SystemRole.Administrator)]
+    [HttpPost("assign-to-agent")]
+    public async Task AssignToAgent([FromBody] AssignTicketToAgentDto dto)
+    {
+        await _ticketService.AssignToAgent(dto);
+    }
 }
