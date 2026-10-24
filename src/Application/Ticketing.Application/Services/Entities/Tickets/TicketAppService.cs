@@ -113,6 +113,22 @@ public class TicketAppService : ITicketService
         await _unitOfWork.Complete();
     }
 
+    public async Task ChangeStatusIntoOpen(string ticketId, string userRole)
+    {
+
+        if (userRole == SystemRole.Client)
+        {
+            var ticket = await _repository.FindById(ticketId);
+            if (ticket == null)
+            {
+                throw new TicketNotFoundException();
+            }
+            ticket.Status = TicketStatus.Open;
+            await _unitOfWork.Complete();
+
+        }
+    }
+
     public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
         string userId,
         IPagination? pagination,
@@ -147,7 +163,7 @@ public class TicketAppService : ITicketService
         return await _repository.GetDetailsForAdmin(id);
     }
 
-    public async Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId)
+    public async Task<GetClientTicketDetailsDto?> GetDetailsForClient(string id, string userId)
     {
         return await _repository.GetDetailsForClient(id, userId);
     }

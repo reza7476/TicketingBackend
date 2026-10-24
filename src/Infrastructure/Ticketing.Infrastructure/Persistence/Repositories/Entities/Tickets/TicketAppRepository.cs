@@ -79,7 +79,7 @@ public class TicketAppRepository : ITicketRepository
 
     public async Task<List<Ticket>> GetAllAnsweredTickets()
     {
-        var twoHoursAgo = DateTime.UtcNow.AddMinutes(-2);
+        var twoHoursAgo = DateTime.UtcNow.AddMinutes(-10);
 
         var query =
             from ticket in _tickets
@@ -266,7 +266,7 @@ public class TicketAppRepository : ITicketRepository
         return query;
     }
 
-    public Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId)
+    public Task<GetClientTicketDetailsDto?> GetDetailsForClient(string id, string userId)
     {
         var users = _users;
 
@@ -278,7 +278,7 @@ public class TicketAppRepository : ITicketRepository
              join reply in _replies
              on ticket.Id equals reply.TicketId into ticketReplies
 
-             select new GetTicketDetailsDto()
+             select new GetClientTicketDetailsDto()
              {
                  AskedBy = owner.Mobile,
                  Content = ticket.Content,
@@ -286,16 +286,17 @@ public class TicketAppRepository : ITicketRepository
                  Priority = ticket.Priority,
                  Status = ticket.Status,
                  Title = ticket.Title,
-                 Number = ticket.Number,
                  Replies = (
                     from reply in ticketReplies
                     join replyUser in users
                         on reply.UserId equals replyUser.Id
-                    select new TicketRepliedDto
+                    select new TicketClientRepliesDto
                     {
-                        RepliedAt = reply.CreatedAt,
-                        RepliedBy = replyUser.Mobile,
+                        CreatedAt = reply.CreatedAt,
+                        Mobile = replyUser.Mobile,
                         Content = reply.Content,
+                        IssuedBy=reply.IssuedBy,
+                        Id=reply.Id,
                     }).ToList()
              }).FirstOrDefaultAsync();
         return query;

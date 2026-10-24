@@ -95,7 +95,7 @@ public class TicketsController : ControllerBase
 
     [Authorize(Roles = SystemRole.Client)]
     [HttpGet("{id}/get-for-client")]
-    public async Task<GetTicketDetailsDto?> GetDetailsForClient([FromRoute] string id)
+    public async Task<GetClientTicketDetailsDto?> GetDetailsForClient([FromRoute] string id)
     {
         var userId = _userTokenService.UserId;
         return await _ticketService.GetDetailsForClient(id, userId!);
