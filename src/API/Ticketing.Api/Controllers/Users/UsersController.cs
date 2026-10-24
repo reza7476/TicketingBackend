@@ -56,5 +56,15 @@ namespace Ticketing.Api.Controllers.Users
         {
             await _userService.Edit(dto, id);
         }
+
+
+        [Authorize(Roles=
+            SystemRole.Admin+","+
+            SystemRole.Administrator)]
+        [HttpGet("agents")]
+        public async Task<List<GetAllAgentsDto>> GetAgents()
+        {
+            return await _userService.GetAllAgents();
+        }
     }
 }

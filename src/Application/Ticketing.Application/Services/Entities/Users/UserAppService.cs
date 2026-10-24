@@ -129,6 +129,11 @@ public class UserAppService : IUserService
         await _unitOfWork.Complete();
     }
 
+    public async Task<List<GetAllAgentsDto>> GetAllAgents()
+    {
+        return await _repository.GetAllAgents();
+    }
+
     public async Task<IPageResult<GetAllUsersDto>>
         GetAllForAdministrator(
         IPagination? pagination = null,
