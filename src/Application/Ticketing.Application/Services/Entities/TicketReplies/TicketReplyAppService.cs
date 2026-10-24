@@ -51,6 +51,20 @@ public class TicketReplyAppService : ITicketReplyService
         return reply.Id;
     }
 
+    public async Task<string> Approve(string id)
+    {
+
+        var reply = await _repository.FindById(id);
+        if (reply == null)
+        {
+            throw new TicketReplyNotFoundException();
+        }
+
+        reply.ApprovedByAdmin = true;
+        await _unitOfWork.Complete();
+        return reply.TicketId;
+    }
+
     public async Task Edit(string id, EditTicketReplyDto dto)
     {
         var reply = await _repository.FindById(id);

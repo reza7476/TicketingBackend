@@ -1,4 +1,5 @@
 ﻿using Ticketing.Application.Services.Entities.TicketReplies.Contracts;
+using Ticketing.Application.Services.Entities.TicketReplies.Contracts.Dto;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.UseCases.TicketReplies.Contracts;
 using Ticketing.Shared.Interfaces;
@@ -22,5 +23,20 @@ public class TicketReplyHandler : ITicketReplyHandler
         _ticketReplyService = ticketReplyService;
     }
 
+    public async Task Approve(ApproveReplyDto dto)
+    {
+        await _unitOfWork.Begin();
+        try
+        {
+            var ticketId = await _ticketReplyService.Approve(dto.ReplyId);
+            await _ticketService.ChangeStatusIntoAnswered(ticketId);
+            await _unitOfWork.Commit();
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RoleBack();
+            throw;
+        }
 
+    }
 }
