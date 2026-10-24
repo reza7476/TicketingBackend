@@ -59,22 +59,6 @@ public class TicketAppService : ITicketService
         throw new NotImplementedException();
     }
 
-    public async Task ChangeStatusByAgent(ChangeTicketStatusDto dto)
-    {
-        var ticket = await _repository.FindById(dto.TicketId);
-        if (ticket == null)
-        {
-            throw new TicketNotFoundException();
-        }
-
-        if (ticket.Status == TicketStatus.Closed)
-        {
-            throw new TicketStatusWasChangedException();
-        }
-        ticket.Status = dto.Status;
-        await _unitOfWork.Complete();
-    }
-
     public async Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto)
     {
         var ticket = await _repository.FindById(dto.TicketId);
@@ -151,6 +135,11 @@ public class TicketAppService : ITicketService
         IPagination? pagination)
     {
         return await _repository.GetAllForClient(userId, filter, pagination);
+    }
+
+    public async Task<GetTicketDetailsForAgentDto?> GetDetailsForAgent(string id)
+    {
+        return await _repository.GetDetailsForAgent(id);
     }
 
     public async Task<GetTicketDetailsDto?> GetDetailsForAmin(string id)
