@@ -50,6 +50,13 @@ public class TicketRepliesController : ControllerBase
         await _replyService.Edit(id, dto);
     }
 
+    [Authorize(Roles=SystemRole.Admin+","+
+        SystemRole.Administrator)]
+    [HttpPatch("approve-reply")]
+    public async Task Approve([FromBody] ApproveReplyDto dto)
+    {
+        await _ticketReplyHandler.Approve(dto);
+    }
 
 
     [Authorize(Roles = SystemRole.Client)]
