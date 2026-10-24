@@ -12,10 +12,12 @@ public interface ITicketRepository : IRepository
     Task AddTicketAssignment(TicketAssignment assignment);
     Task<Ticket?> FindById(string id);
     Task<List<Ticket>> GetAllAnsweredTickets();
-    Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
-        IPagination? pagination,
-        TicketFilterDto? filter);
-    
+    Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
+        IPagination? pagination = null,
+        TicketFilterDto? filter = null,
+        string? search = null);
+
+
     Task<IPageResult<GetAllTicketsDto>> GetAllForClient(
         string userId,
         TicketFilterDto? filter,
