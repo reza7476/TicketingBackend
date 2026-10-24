@@ -23,6 +23,25 @@ public class TicketReplyHandler : ITicketReplyHandler
         _ticketReplyService = ticketReplyService;
     }
 
+    public async Task<string> Add(AddTicketReplyDto dto, string userId, string userRole)
+    {
+
+        await _unitOfWork.Begin();
+        try
+        {
+            await _ticketService.ChangeStatusIntoOpen(dto.TicketId, userRole);
+            var replyId = await _ticketReplyService.Add(dto, userId, userRole);
+            await _unitOfWork.Commit();
+            return replyId;
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RoleBack();
+            throw;
+        }
+
+    }
+
     public async Task Approve(ApproveReplyDto dto)
     {
         await _unitOfWork.Begin();

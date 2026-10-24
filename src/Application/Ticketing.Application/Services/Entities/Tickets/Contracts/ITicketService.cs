@@ -11,6 +11,7 @@ public interface ITicketService : IService
     Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto);
     Task ChangeStatusIntoAnswered(string ticketId);
     Task ChangeStatusIntoInProgress(string ticketId);
+    Task ChangeStatusIntoOpen(string ticketId, string roleId);
     Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
         string userId,
         IPagination? pagination,
@@ -26,5 +27,5 @@ public interface ITicketService : IService
         IPagination? pagination);
     Task<GetTicketDetailsForAgentDto?> GetDetailsForAgent(string id);
     Task<GetTicketDetailsDto?> GetDetailsForAmin(string id);
-    Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId);
+    Task<GetClientTicketDetailsDto?> GetDetailsForClient(string id, string userId);
 }

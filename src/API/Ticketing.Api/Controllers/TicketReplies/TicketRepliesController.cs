@@ -28,20 +28,19 @@ public class TicketRepliesController : ControllerBase
     }
 
 
-    [Authorize(Roles = SystemRole.Agent)]
-    [HttpPost("reply-by-agent")]
+    [Authorize(Roles = SystemRole.Agent + "," + SystemRole.Client)]
+    [HttpPost("reply")]
 
     public async Task<string> ReplyTicketByAgent([FromBody] AddTicketReplyDto dto)
     {
 
         var userId = _userTokenService.UserId;
         var userRole = _userTokenService.UserRole;
-        return await _replyService.Add(dto, userId!, userRole!);
+
+        return await _ticketReplyHandler.Add(dto, userId!, userRole!);
     }
 
-    [Authorize(Roles = SystemRole.Admin + "," +
-        SystemRole.Agent + "," +
-        SystemRole.Administrator)]
+    [Authorize]
     [HttpPut("{id}")]
     public async Task EditReply(
         [FromRoute] string id,
@@ -50,7 +49,7 @@ public class TicketRepliesController : ControllerBase
         await _replyService.Edit(id, dto);
     }
 
-    [Authorize(Roles=SystemRole.Admin+","+
+    [Authorize(Roles = SystemRole.Admin + "," +
         SystemRole.Administrator)]
     [HttpPatch("approve-reply")]
     public async Task Approve([FromBody] ApproveReplyDto dto)

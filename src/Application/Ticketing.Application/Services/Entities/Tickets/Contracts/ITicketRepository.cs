@@ -29,5 +29,5 @@ public interface ITicketRepository : IRepository
 
     Task<GetTicketDetailsDto?> GetDetailsForAdmin(string id);
     Task<GetTicketDetailsForAgentDto?> GetDetailsForAgent(string id);
-    Task<GetTicketDetailsDto?> GetDetailsForClient(string id, string userId);
+    Task<GetClientTicketDetailsDto?> GetDetailsForClient(string id, string userId);
 }
