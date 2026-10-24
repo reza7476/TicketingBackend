@@ -63,6 +63,20 @@ public class TicketsController : ControllerBase
         return await _ticketService.GetDetailsForAmin(id);
     }
 
+
+    [Authorize(Roles=SystemRole.Agent)]
+    [HttpGet("all-for-agent")]
+    public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
+        [FromQuery] Pagination? pagination = null, 
+        [FromQuery] TicketFilterDto? filter=null)
+    {
+        var userId = _userTokenService.UserId;
+        return await _ticketService.GetAllAgentTickets(userId!,pagination, filter);
+    }
+
+
+
+
     [Authorize(Roles = SystemRole.Agent)]
     [HttpPatch("change-status-by-agent")]
     public async Task ChangeStatusByAgent([FromBody] ChangeTicketStatusDto dto)

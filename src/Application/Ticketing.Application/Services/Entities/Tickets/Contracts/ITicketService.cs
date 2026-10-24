@@ -7,10 +7,16 @@ namespace Ticketing.Application.Services.Entities.Tickets.Contracts;
 public interface ITicketService : IService
 {
     Task<string> Add(AddTicketDto dto, string? userId);
+    Task AssignToAgent(AssignTicketToAgentDto dto);
     Task ChangeStatusByAgent(ChangeTicketStatusDto dto);
     Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto);
     Task ChangeStatusIntoAnswered(string ticketId);
     Task ChangeStatusIntoInProgress(string ticketId);
+    Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
+        string userId,
+        IPagination? pagination,
+        TicketFilterDto? filter);
+    
     Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
         IPagination? pagination = null,
         TicketFilterDto? filter = null,
