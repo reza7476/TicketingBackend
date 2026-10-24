@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ticketing.Application;
 using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Contracts.Dto;
 using Ticketing.Domain.Entities.Organizations;
@@ -67,6 +68,24 @@ public class UserAppRepository : IUserRepository
     {
         return await _userRoles
             .FirstAsync(_ => _.UserId == id);
+    }
+
+    public async Task<List<GetAllAgentsDto>> GetAllAgents()
+    {
+        var query = await (from role in _roles
+                     join userRole in _userRoles
+                     on role.Id equals userRole.RoleId
+                     join user in _users
+                     on userRole.UserId equals user.Id
+                     where role.Title == SystemRole.Agent
+                     select new GetAllAgentsDto()
+                     {
+                         FirstName=user.FirstName,
+                         LastName=user.LastName,
+                         Id=user.Id,
+                     }).ToListAsync();
+
+        return query;
     }
 
     public async Task<IPageResult<GetAllUsersDto>>

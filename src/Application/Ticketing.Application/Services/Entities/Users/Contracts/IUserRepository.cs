@@ -15,6 +15,7 @@ public interface IUserRepository : IRepository
         FindByMobileForToken(string mobile);
     Task<User?> FindId(string id);
     Task<UserRole> FindUserRoleByUserId( string id);
+    Task<List<GetAllAgentsDto>> GetAllAgents();
     Task<IPageResult<GetAllUsersDto>> 
         GetAllForAdministrator(
         IPagination? pagination, 
