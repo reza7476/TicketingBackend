@@ -39,8 +39,8 @@ public class TicketAppRepository : ITicketRepository
     }
 
     public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
-        string userId, 
-        IPagination? pagination, 
+        string userId,
+        IPagination? pagination,
         TicketFilterDto? filter)
     {
         var query = (from assign in _assignments
@@ -51,17 +51,17 @@ public class TicketAppRepository : ITicketRepository
                      where assign.AssignedToUserId == userId
                      select new GetAllAgentTicketsDto()
                      {
-                         AskedBy=user.Mobile,
-                         Id=ticket.Id,
-                         AssignedAt=assign.CreatedAt,
-                         CreatedAt=ticket.CreatedAt,
-                         Number=ticket.Number,
-                         Priority=ticket.Priority,
-                         Status=ticket.Status,
+                         AskedBy = user.Mobile,
+                         Id = ticket.Id,
+                         AssignedAt = assign.CreatedAt,
+                         CreatedAt = ticket.CreatedAt,
+                         Number = ticket.Number,
+                         Priority = ticket.Priority,
+                         Status = ticket.Status,
                          Title = ticket.Title
                      }).AsQueryable();
 
-        if(filter != null)
+        if (filter != null)
         {
             if (filter.Priority != null)
             {
@@ -227,7 +227,7 @@ public class TicketAppRepository : ITicketRepository
         return query;
     }
 
-    public async Task<GetTicketDetailsForAgentDto?> 
+    public async Task<GetTicketDetailsForAgentDto?>
         GetDetailsForAgent(string id)
     {
         var users = _users;
@@ -290,13 +290,15 @@ public class TicketAppRepository : ITicketRepository
                     from reply in ticketReplies
                     join replyUser in users
                         on reply.UserId equals replyUser.Id
+                    where reply.ApprovedByAdmin
+                       || reply.IssuedBy == "Client"
                     select new TicketClientRepliesDto
                     {
                         CreatedAt = reply.CreatedAt,
                         Mobile = replyUser.Mobile,
                         Content = reply.Content,
-                        IssuedBy=reply.IssuedBy,
-                        Id=reply.Id,
+                        IssuedBy = reply.IssuedBy,
+                        Id = reply.Id,
                     }).ToList()
              }).FirstOrDefaultAsync();
         return query;
