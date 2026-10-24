@@ -6,4 +6,5 @@ public interface IUserTokenService : IScope
 {
 
     string? UserId { get; }
+    string? UserRole { get; }
 }

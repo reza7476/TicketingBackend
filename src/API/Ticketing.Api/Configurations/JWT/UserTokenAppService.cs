@@ -13,10 +13,17 @@ public class UserTokenAppService : IUserTokenService
     }
 
     public string? UserId => GetUserIdFromToken();
+    public string? UserRole => GetUserRoleFromToken();
 
     private string? GetUserIdFromToken()
     {
         return _contextAccessor.HttpContext?.User.Claims?
             .FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier)?.Value;
+    }
+
+    private string? GetUserRoleFromToken()
+    {
+        return _contextAccessor.HttpContext?.User.Claims?
+           .FirstOrDefault(_ => _.Type == ClaimTypes.Role)?.Value;
     }
 }

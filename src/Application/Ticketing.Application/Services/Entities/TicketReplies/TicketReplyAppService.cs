@@ -1,5 +1,8 @@
 ﻿using Ticketing.Application.Services.Entities.TicketReplies.Contracts;
 using Ticketing.Application.Services.Entities.TicketReplies.Contracts.Dto;
+using Ticketing.Application.Services.Entities.TicketReplies.Exceptions;
+using Ticketing.Application.Services.Entities.Tickets.Exceptions;
+using Ticketing.Application.UseCases.TicketReplies.Contracts.Dto;
 using Ticketing.Domain.Entities.TicketReplies;
 using Ticketing.Shared.Interfaces;
 
@@ -22,19 +25,42 @@ public class TicketReplyAppService : ITicketReplyService
         _repository = repository;
     }
 
-    public async Task<string> AddReply(AddTicketReplyDto dto)
+    public async Task<string> Add(
+        AddTicketReplyDto dto, 
+        string userId,
+        string userRole)
     {
+        if(!await _repository.TicketIsExistById(dto.TicketId))
+        {
+            throw new TicketNotFoundException();
+        }
+
         var reply = new TicketReply()
         {
+            Id = Guid.NewGuid().ToString(),
+            ApprovedByAdmin = false,
             Content = dto.Content,
             CreatedAt = _dateTimeService.Now,
-            Id = Guid.NewGuid().ToString(),
+            IssuedBy = userRole,
             TicketId = dto.TicketId,
-            UserId = dto.UserId,
-
+            UserId = userId,
         };
+
         await _repository.Add(reply);
         await _unitOfWork.Complete();
         return reply.Id;
+    }
+
+    public async Task Edit(string id, EditTicketReplyDto dto)
+    {
+        var reply = await _repository.FindById(id);
+        if(reply == null)
+        {
+            throw new TicketReplyNotFoundException();
+        }
+
+
+        reply.Content = dto.Content;
+        await _unitOfWork.Complete();   
     }
 }
