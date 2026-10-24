@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ticketing.Application;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
+using Ticketing.Application.UseCases.AssignTickets.Contracts;
 using Ticketing.Infrastructure.Persistence.Extensions.Paginations;
 using Ticketing.Shared.Interfaces.Paginations;
 using Ticketing.Shared.JWT;
@@ -15,13 +16,17 @@ public class TicketsController : ControllerBase
 {
     private readonly ITicketService _ticketService;
     private readonly IUserTokenService _userTokenService;
+    private readonly IAssignHandler _assignHandler;
+
 
     public TicketsController(
         ITicketService ticketService,
-        IUserTokenService userTokenService)
+        IUserTokenService userTokenService,
+        IAssignHandler assignHandler)
     {
         _ticketService = ticketService;
         _userTokenService = userTokenService;
+        _assignHandler = assignHandler;
     }
 
 
@@ -38,7 +43,7 @@ public class TicketsController : ControllerBase
         SystemRole.Admin + "," +
         SystemRole.Administrator)]
     [HttpGet("get-all-for-admin")]
-    public async Task<IPageResult<GetAllTicketsDto>> GetAllForAgent(
+    public async Task<IPageResult<GetAllTicketsDto>> GetAllForAdmin(
         [FromQuery] TicketFilterDto? filter = null,
         [FromQuery] Pagination? pagination = null,
         [FromQuery] string? search = null
@@ -91,6 +96,6 @@ public class TicketsController : ControllerBase
     [HttpPost("assign-to-agent")]
     public async Task AssignToAgent([FromBody] AssignTicketToAgentDto dto)
     {
-        await _ticketService.AssignToAgent(dto);
+        await _assignHandler.AssignToAgent(dto);
     }
 }
