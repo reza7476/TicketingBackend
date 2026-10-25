@@ -43,36 +43,45 @@ public class TicketAppRepository : ITicketRepository
         IPagination? pagination,
         TicketFilterDto? filter)
     {
-        var query = (from assign in _assignments
-                     join ticket in _tickets
-                     on assign.TicketId equals ticket.Id
-                     join user in _users
-                     on assign.AssignedToUserId equals user.Id
-                     where assign.AssignedToUserId == userId
-                     select new GetAllAgentTicketsDto()
-                     {
-                         AskedBy = user.Mobile,
-                         Id = ticket.Id,
-                         AssignedAt = assign.CreatedAt,
-                         CreatedAt = ticket.CreatedAt,
-                         Number = ticket.Number,
-                         Priority = ticket.Priority,
-                         Status = ticket.Status,
-                         Title = ticket.Title
-                     }).AsQueryable();
+        var assignments = _assignments
+       .Where(a => a.AssignedToUserId == userId)
+       .GroupBy(a => a.TicketId)
+       .Select(g => new
+       {
+           TicketId = g.Key,
+           AssignedAt = g.Max(a => a.CreatedAt)
+       });
 
-        if (filter != null)
+        var query =
+            from assign in assignments
+            join ticket in _tickets
+                on assign.TicketId equals ticket.Id
+            join user in _users
+                on ticket.UserId equals user.Id
+            select new GetAllAgentTicketsDto
+            {
+                AskedBy = user.Mobile,
+                Id = ticket.Id,
+                AssignedAt = assign.AssignedAt,
+                CreatedAt = ticket.CreatedAt,
+                Number = ticket.Number,
+                Priority = ticket.Priority,
+                Status = ticket.Status,
+                Title = ticket.Title
+            };
+
+        if (filter?.Priority != null)
         {
-            if (filter.Priority != null)
-            {
-                query = query.Where(_ => _.Priority == filter.Priority);
-            }
-            if (filter.Status != null)
-            {
-                query = query.Where(_ => _.Status == filter.Status);
-            }
+            query = query.Where(t => t.Priority == filter.Priority);
         }
+
+        if (filter?.Status != null)
+        {
+            query = query.Where(t => t.Status == filter.Status);
+        }
+
         query = query.OrderBy(t => t.Number);
+
         return await query.Paginate(pagination ?? new Pagination());
 
     }
