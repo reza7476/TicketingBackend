@@ -73,6 +73,7 @@ public class UsersController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("profile")]
     public async Task<GetUserProfileDto?> GetProfile()
     {
         var userId = _tokenService.UserId;
