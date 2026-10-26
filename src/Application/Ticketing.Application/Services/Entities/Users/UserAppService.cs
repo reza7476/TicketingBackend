@@ -148,4 +148,9 @@ public class UserAppService : IUserService
     {
         return await _repository.GetDetails(id);
     }
+
+    public async Task<GetUserProfileDto?> GetUserProfile(string id)
+    {
+        return await _repository.GetUserProfile(id);
+    }
 }

@@ -22,6 +22,7 @@ public interface IUserRepository : IRepository
         UserFilterDto? filter,
         string? search);
     Task<GetUserDetailsDto?> GetDetails(string id);
+    Task<GetUserProfileDto?> GetUserProfile(string id);
     Task<string?> GetUserRole(string id);
     Task<bool> IsExistByMobile(string mobile);
     Task<bool> IsExistByMobileAndId(string mobile, string id);

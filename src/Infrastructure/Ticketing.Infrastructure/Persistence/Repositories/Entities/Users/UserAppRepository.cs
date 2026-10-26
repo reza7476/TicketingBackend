@@ -73,17 +73,17 @@ public class UserAppRepository : IUserRepository
     public async Task<List<GetAllAgentsDto>> GetAllAgents()
     {
         var query = await (from role in _roles
-                     join userRole in _userRoles
-                     on role.Id equals userRole.RoleId
-                     join user in _users
-                     on userRole.UserId equals user.Id
-                     where role.Title == SystemRole.Agent
-                     select new GetAllAgentsDto()
-                     {
-                         FirstName=user.FirstName,
-                         LastName=user.LastName,
-                         Id=user.Id,
-                     }).ToListAsync();
+                           join userRole in _userRoles
+                           on role.Id equals userRole.RoleId
+                           join user in _users
+                           on userRole.UserId equals user.Id
+                           where role.Title == SystemRole.Agent
+                           select new GetAllAgentsDto()
+                           {
+                               FirstName = user.FirstName,
+                               LastName = user.LastName,
+                               Id = user.Id,
+                           }).ToListAsync();
 
         return query;
     }
@@ -165,6 +165,22 @@ public class UserAppRepository : IUserRepository
                           Role = role != null ? role.Title : null
                       }).FirstOrDefaultAsync();
 
+    }
+
+    public Task<GetUserProfileDto?> GetUserProfile(string id)
+    {
+        var query = (from user in _users
+                     join organ in _organs
+                     on user.OrganizationId equals organ.Id
+                     where user.Id == id
+                     select new GetUserProfileDto()
+                     {
+                         FirstName = user.FirstName,
+                         LastName = user.LastName,
+                         Mobile = user.Mobile,
+                         OrganName = organ.Name,
+                     }).FirstOrDefaultAsync();
+        return query;   
     }
 
     public async Task<string?> GetUserRole(string id)
