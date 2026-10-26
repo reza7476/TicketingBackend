@@ -15,4 +15,5 @@ public interface IUserService : IService
         UserFilterDto? filter = null,
         string? search=null);
     Task<GetUserDetailsDto?> GetDetails(string id);
+    Task<GetUserProfileDto?> GetUserProfile(string id);
 }

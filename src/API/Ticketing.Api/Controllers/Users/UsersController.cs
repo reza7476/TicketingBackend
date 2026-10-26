@@ -5,65 +5,78 @@ using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Contracts.Dto;
 using Ticketing.Infrastructure.Persistence.Extensions.Paginations;
 using Ticketing.Shared.Interfaces.Paginations;
+using Ticketing.Shared.JWT;
 
-namespace Ticketing.Api.Controllers.Users
+namespace Ticketing.Api.Controllers.Users;
+
+[Route("api/users")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [Route("api/users")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    private readonly IUserService _userService;
+    private readonly IUserTokenService _tokenService;
+
+
+    public UsersController(
+        IUserService userService,
+        IUserTokenService tokenService)
     {
-        private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
-        {
-            _userService = userService;
-        }
-
-        [HttpPost("add")]
-        [Authorize(Roles = SystemRole.Administrator + "," +
-            SystemRole.Admin)]
-        public async Task<string> Add([FromBody] AddUserDto dto)
-        {
-            return await _userService.Add(dto);
-        }
-
-        [Authorize(Roles = SystemRole.Administrator)]
-        [HttpGet("all-for-administrator")]
-        public async Task<IPageResult<GetAllUsersDto>> GetAll(
-            [FromQuery] Pagination? pagination = null,
-            [FromQuery] UserFilterDto? filter = null,
-            [FromQuery] string? search = null
-            )
-        {
-            return await _userService
-                .GetAllForAdministrator(pagination, filter, search);
-        }
-
-        [HttpGet("{id}/details")]
-        [Authorize(Roles =
-            SystemRole.Administrator)]
-        public async Task<GetUserDetailsDto?> GetDetails([FromRoute] string id)
-        {
-            return await _userService.GetDetails(id);
-        }
-
-
-        [Authorize(Roles = SystemRole.Administrator)]
-        [HttpPut("{id}")]
-        public async Task EditUser(
-            [FromRoute] string id,
-            [FromBody] EditUserDto dto)
-        {
-            await _userService.Edit(dto, id);
-        }
-
-        [Authorize(Roles=
-            SystemRole.Admin+","+
-            SystemRole.Administrator)]
-        [HttpGet("agents")]
-        public async Task<List<GetAllAgentsDto>> GetAgents()
-        {
-            return await _userService.GetAllAgents();
-        }
+        _userService = userService;
+        _tokenService = tokenService;
     }
+
+    [HttpPost("add")]
+    [Authorize(Roles = SystemRole.Administrator + "," +
+        SystemRole.Admin)]
+    public async Task<string> Add([FromBody] AddUserDto dto)
+    {
+        return await _userService.Add(dto);
+    }
+
+    [Authorize(Roles = SystemRole.Administrator)]
+    [HttpGet("all-for-administrator")]
+    public async Task<IPageResult<GetAllUsersDto>> GetAll(
+        [FromQuery] Pagination? pagination = null,
+        [FromQuery] UserFilterDto? filter = null,
+        [FromQuery] string? search = null
+        )
+    {
+        return await _userService
+            .GetAllForAdministrator(pagination, filter, search);
+    }
+
+    [HttpGet("{id}/details")]
+    [Authorize(Roles =
+        SystemRole.Administrator)]
+    public async Task<GetUserDetailsDto?> GetDetails([FromRoute] string id)
+    {
+        return await _userService.GetDetails(id);
+    }
+
+
+    [Authorize(Roles = SystemRole.Administrator)]
+    [HttpPut("{id}")]
+    public async Task EditUser(
+        [FromRoute] string id,
+        [FromBody] EditUserDto dto)
+    {
+        await _userService.Edit(dto, id);
+    }
+
+    [Authorize(Roles =
+        SystemRole.Admin + "," +
+        SystemRole.Administrator)]
+    [HttpGet("agents")]
+    public async Task<List<GetAllAgentsDto>> GetAgents()
+    {
+        return await _userService.GetAllAgents();
+    }
+
+    [Authorize]
+    public async Task<GetUserProfileDto?> GetProfile()
+    {
+        var userId = _tokenService.UserId;
+        return await _userService.GetUserProfile(userId!);
+    }
+
 }
