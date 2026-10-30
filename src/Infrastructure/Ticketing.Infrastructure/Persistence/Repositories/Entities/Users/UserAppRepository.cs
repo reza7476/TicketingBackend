@@ -162,7 +162,9 @@ public class UserAppRepository : IUserRepository
                           LastName = user.LastName,
                           Mobile = user.Mobile,
                           Organization = organ.Name,
-                          Role = role != null ? role.Title : null
+                          Role = role != null ? role.Title : null,
+                          OrganizationId = organ.Id,
+                          RoleId = role.Id
                       }).FirstOrDefaultAsync();
 
     }
@@ -180,7 +182,7 @@ public class UserAppRepository : IUserRepository
                          Mobile = user.Mobile,
                          OrganName = organ.Name,
                      }).FirstOrDefaultAsync();
-        return query;   
+        return query;
     }
 
     public async Task<string?> GetUserRole(string id)
