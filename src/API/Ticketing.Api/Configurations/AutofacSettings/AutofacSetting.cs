@@ -57,10 +57,13 @@ public static class AutofacSetting
             builder.Register(ctx =>
             {
                 var settings = ctx.Resolve<IOptions<MiIoSettingsDto>>().Value;
-                a = settings.AccessKey; b = settings.SecretKey;
+                a = settings.AccessKey;
+                b = settings.SecretKey;
                 return new MinioClient()
                 .WithEndpoint(settings.Endpoint)
-                .WithCredentials(settings.AccessKey, settings.SecretKey)
+                .WithCredentials(
+                    settings.AccessKey, 
+                    settings.SecretKey)
                 .Build();
             })
            .As<IMinioClient>()

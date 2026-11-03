@@ -1,12 +1,40 @@
 ﻿using Ticketing.Application.Services.Entities.Documents.Contracts;
 using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
+using Ticketing.Domain.Entities.Documents;
+using Ticketing.Shared.Interfaces;
 
 namespace Ticketing.Application.Services.Entities.Documents;
 
 public class DocumentAppService : IDocumentService
 {
-    public Task<string> Add(AddDocumentDto addDocumentDto)
+
+    private readonly IDocumentRepository _repository;
+    private readonly IDateTimeService _dataTimeService;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public DocumentAppService(
+        IDocumentRepository repository,
+        IDateTimeService dataTimeService,
+        IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _repository = repository;
+        _dataTimeService = dataTimeService;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task Add(AddDocumentDto dto)
+    {
+        var document = new Document()
+        {
+            Id = dto.Id,
+            ObjectName = dto.ObjectName,
+            OriginalFileName = dto.OriginalFileName,
+            ContentType = dto.ContentType,
+            Size = dto.Size,
+            CreatedAt = _dataTimeService.Now,
+        };
+
+        await _repository.Add(document);
+        await _unitOfWork.Complete();
     }
 }

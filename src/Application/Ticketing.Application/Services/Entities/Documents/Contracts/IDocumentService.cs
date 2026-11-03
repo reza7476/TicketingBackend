@@ -5,5 +5,5 @@ namespace Ticketing.Application.Services.Entities.Documents.Contracts;
 
 public interface IDocumentService : IService
 {
-    Task<string> Add(AddDocumentDto addDocumentDto);
+    Task Add(AddDocumentDto dto);
 }

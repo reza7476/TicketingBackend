@@ -7,6 +7,7 @@ using Ticketing.Api.Configurations.HandlerExceptions;
 using Ticketing.Api.Configurations.HangfireConfigurations;
 using Ticketing.Api.Configurations.SwaggerSettings;
 using Ticketing.Infrastructure.Persistence.DatabaseContext;
+using Ticketing.Shared.DTOS;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.Configure<MiIoSettingsDto>(builder.Configuration.GetSection("MinIO"));
 builder.Host.AddAutoFac();
 
 builder.Services.AddEndpointsApiExplorer();
