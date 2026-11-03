@@ -35,6 +35,19 @@ public class StoragesController : ControllerBase
         var originalFileName = file.FileName;
         return await _service.Upload(fileAsByte, fileExtension, file.ContentType, originalFileName);
     }
+
+
+    [HttpGet("{id}/download")]
+    public async Task<IActionResult> Download([FromRoute] string id)
+    {
+        var result= await _service.Download(id);
+        if (result == null)
+            return  NoContent();
+        return File(result.Data, result.ContentType, result.FileName);
+    }
+
+
+
     private async Task<byte[]> FormFileToByteArrayAsync(IFormFile file)
     {
         await using var memoryStream = new MemoryStream();

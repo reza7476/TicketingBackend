@@ -37,4 +37,9 @@ public class DocumentAppService : IDocumentService
         await _repository.Add(document);
         await _unitOfWork.Complete();
     }
+
+    public async Task<Document?> FindById(string id)
+    {
+        return await _repository.FindById(id);
+    }
 }
