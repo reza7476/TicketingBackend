@@ -6,7 +6,7 @@ public interface IFileStorage
 {
     Task Delete(string id);
     Task<DownloadDocumentDto?> Download(string id);
-    Task<string> Upload(
+    Task<DocumentInfoDto> Upload(
         byte[] fileAsByte,
         string fileExtension,
         string contentType,

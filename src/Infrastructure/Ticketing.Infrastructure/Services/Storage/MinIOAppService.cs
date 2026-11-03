@@ -1,4 +1,5 @@
-﻿using Minio;
+﻿using Microsoft.Extensions.Options;
+using Minio;
 using Minio.DataModel.Args;
 using Ticketing.Application.Services.Entities.Documents.Contracts;
 using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
@@ -11,13 +12,13 @@ public class MinIOAppService : IFileStorage
 {
 
     private readonly IMinioClient _client;
-    private readonly MiIoSettingsDto _setting;
+    private readonly IOptions<MiIoSettingsDto> _setting;
 
     private readonly IDocumentService _documentService;
 
     public MinIOAppService(
         IMinioClient client,
-        MiIoSettingsDto setting,
+         IOptions<MiIoSettingsDto> setting,
         IDocumentService documentService)
     {
         _client = client;
@@ -35,7 +36,7 @@ public class MinIOAppService : IFileStorage
         throw new NotImplementedException();
     }
 
-    public async Task<string> Upload(
+    public async Task<DocumentInfoDto> Upload(
        byte[] file,
        string fileExtension,
        string contentType,
@@ -44,13 +45,13 @@ public class MinIOAppService : IFileStorage
         var objectName = Guid.NewGuid().ToString();
         var fileStream = new MemoryStream(file);
         var putObjectArgs = new PutObjectArgs()
-            .WithBucket(_setting.BucketName)
+            .WithBucket(_setting.Value.BucketName)
             .WithObject(objectName)
             .WithStreamData(fileStream)
             .WithObjectSize(file.Length)
             .WithContentType(contentType);
         await _client.PutObjectAsync(putObjectArgs);
-        var documentId = await _documentService.Add(new AddDocumentDto()
+        await _documentService.Add(new AddDocumentDto()
         {
             Id = objectName,
             ObjectName = objectName,
@@ -58,6 +59,12 @@ public class MinIOAppService : IFileStorage
             Size = file.Length,
             OriginalFileName = originalFileName
         });
-        return documentId;
+        var result = new DocumentInfoDto()
+        {
+            DocumentId = objectName,
+            Extension = contentType
+        };
+
+        return result;
     }
 }

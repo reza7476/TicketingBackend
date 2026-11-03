@@ -8,6 +8,7 @@ public class User
     public User()
     {
         Roles = new List<UserRole>();
+        Documents = new List<UserDocument>();
     }
 
     public string Id { get; set; } = default!;
@@ -19,5 +20,7 @@ public class User
     public string OrganizationId { get; set; } = default!;
     public Organization Organization { get; set; } = default!;
     public List<UserRole> Roles { get; set; }
+
+    public List<UserDocument> Documents { get; set; }
 
 }
