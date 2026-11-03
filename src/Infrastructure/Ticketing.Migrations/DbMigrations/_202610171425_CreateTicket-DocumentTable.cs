@@ -13,7 +13,6 @@ public class _202610171425_CreateTicket_DocumentTable : Migration
         Create.Table("TicketDocuments")
             .WithColumn("Id").AsString().PrimaryKey().NotNullable()
             .WithColumn("DocumentId").AsString().NotNullable()
-            .WithColumn("UserId").AsString().NotNullable()
             .WithColumn("TicketId").AsString().NotNullable()
             .WithColumn("Extension").AsString().NotNullable();
         Create.ForeignKey("FK_TicketDocuments_Tickets")
