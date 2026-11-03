@@ -1,4 +1,6 @@
-﻿namespace Ticketing.Application.Services.Entities.Users.Contracts.Dto;
+﻿using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
+
+namespace Ticketing.Application.Services.Entities.Users.Contracts.Dto;
 
 public class AddUserDto
 {
@@ -8,4 +10,5 @@ public class AddUserDto
     public string RoleId { get; set; } = default!;
     public string Password { get; set; } = default!;
     public string OrganizationId { get; set; } = default!;
+    public DocumentDto? Document { get; set; }
 }
