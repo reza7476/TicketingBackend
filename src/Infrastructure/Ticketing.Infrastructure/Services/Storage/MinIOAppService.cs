@@ -31,9 +31,39 @@ public class MinIOAppService : IFileStorage
         throw new NotImplementedException();
     }
 
-    public Task<DownloadDocumentDto?> Download(string id)
+    public async Task<DownloadDocumentDto?> Download(string id)
     {
-        throw new NotImplementedException();
+        var document = await _documentService.FindById(id);
+        if(document == null) 
+        {
+            return null;    
+        }
+        byte[]? file = null;
+        var objectArg = new GetObjectArgs()
+            .WithBucket(_setting.Value.BucketName)
+            .WithObject(document.ObjectName)
+            .WithCallbackStream(stream =>
+            {
+                using var ms=new MemoryStream();
+                stream.CopyTo(ms);
+                file=ms.ToArray();
+            });
+        try
+        {
+            await _client.GetObjectAsync(objectArg);
+        }
+        catch (Exception)
+        {
+
+            return null;
+        }
+
+        return new DownloadDocumentDto()
+        {
+            Data = file!,
+            ContentType=document.ContentType,
+            FileName=document.OriginalFileName
+        };
     }
 
     public async Task<DocumentInfoDto> Upload(

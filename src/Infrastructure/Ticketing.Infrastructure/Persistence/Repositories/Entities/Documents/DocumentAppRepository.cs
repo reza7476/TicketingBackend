@@ -19,4 +19,9 @@ public class DocumentAppRepository : IDocumentRepository
     {
         await _documents.AddAsync(document);
     }
+
+    public async Task<Document?> FindById(string id)
+    {
+        return await _documents.FindAsync(id);
+    }
 }
