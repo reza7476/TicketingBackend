@@ -9,6 +9,7 @@ public class Ticket
     {
         Replies = new List<TicketReply>();
         TicketAssignments = new List<TicketAssignment>();
+        Documents = new List<TicketDocument>();
     }
 
     public string Id { get; set; } = default!;
@@ -21,6 +22,7 @@ public class Ticket
     public long Number { get; set; }
     public List<TicketReply> Replies { get; set; }
     public List<TicketAssignment> TicketAssignments { get; set; }
+    public List<TicketDocument> Documents { get; set; }
 
 }
 

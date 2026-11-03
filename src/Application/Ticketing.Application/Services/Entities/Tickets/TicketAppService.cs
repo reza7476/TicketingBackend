@@ -48,6 +48,16 @@ public class TicketAppService : ITicketService
             CreatedAt = _dateTimeService.Now,
         };
 
+        if (dto.Document != null)
+        {
+            ticket.Documents.Add(new TicketDocument()
+            {
+                Id = Guid.NewGuid().ToString(),
+                DocumentId = dto.Document.DocumentId,
+                Extension = dto.Document.Extension,
+            });
+        }
+
         await _repository.Add(ticket);
         await _unitOfWork.Complete();
         return ticket.Id;

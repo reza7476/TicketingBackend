@@ -12,9 +12,9 @@ public static class Program
         var connectionString = GetConnectionString(baseDirectory);
         EnsureDatabaseExist(connectionString);
 
-       var runner = CreateRunner(connectionString);
-       runner.MigrateUp();
-       //runner.MigrateDown(0);
+        var runner = CreateRunner(connectionString);
+         runner.MigrateUp();
+        //runner.MigrateDown(202610171421);
 
     }
 
