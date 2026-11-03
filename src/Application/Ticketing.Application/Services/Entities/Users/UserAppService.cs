@@ -84,6 +84,17 @@ public class UserAppService : IUserService
             UserId = user.Id
         });
 
+
+        if (dto.Document != null)
+        {
+            user.Documents.Add(new UserDocument()
+            {
+                DocumentId = dto.Document.DocumentId,
+                Extension = dto.Document.Extension,
+                Id = Guid.NewGuid().ToString(),
+            });
+        }
+
         await _repository.Add(user);
         await _unitOfWork.Complete();
         return user.Id;
@@ -109,23 +120,23 @@ public class UserAppService : IUserService
             throw new MobileIsDuplicateException();
         }
         var role = await _roleRepository.GetById(dto.RoleId);
-        
+
         if (role == null)
         {
             throw new RoleNotFoundException();
         }
-        
+
         if (role.Title == SystemRole.Client && organ.IsDefault)
         {
             throw new SelectedOrganizationIsWrongException();
         }
-        user.FirstName=dto.FirstName;
-        user.LastName=dto.LastName;
-        user.Mobile= dto.Mobile;
-        user.OrganizationId=dto.OrganizationId;
-        var userRole = await _repository.FindUserRoleByUserId( id);
-        
-        userRole.RoleId=dto.RoleId;
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
+        user.Mobile = dto.Mobile;
+        user.OrganizationId = dto.OrganizationId;
+        var userRole = await _repository.FindUserRoleByUserId(id);
+
+        userRole.RoleId = dto.RoleId;
         await _unitOfWork.Complete();
     }
 
