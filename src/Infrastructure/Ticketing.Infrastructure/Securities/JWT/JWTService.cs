@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Ticketing.Application.Services.Authentications.Contracts.Dto;
 using Ticketing.Shared.DTOS;
 using Ticketing.Shared.JWT;
 
@@ -28,10 +27,11 @@ public class JWTService : IJWTService
             new Claim(JwtRegisteredClaimNames.Sub,dto.Id),
             new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, dto.Id),
-            new Claim(ClaimTypes.Role, dto.Role)
+            new Claim(ClaimTypes.Role, dto.Role),
+            new Claim(ClaimTypes.Name,dto.UserName)
         };
 
-        
+
         var credential = new SigningCredentials(_privateKey, SecurityAlgorithms.RsaSha256);
         var token = new JwtSecurityToken(
             issuer: _jwtSettingDto.Issuer,

@@ -45,11 +45,12 @@ public class AuthenticationAppService : IAuthenticationAppService
 
         var jwtToken = await _jwtService
             .GenerateToken(new UserInfoForJWTToken()
-        {
-                Id=userInfo.Id,
-                Role=userInfo.RoleTitle
-        });
+            {
+                Id = userInfo.Id,
+                Role = userInfo.RoleTitle,
+                UserName=dto.UserName
+            });
 
-        return jwtToken;    
+        return jwtToken;
     }
 }
