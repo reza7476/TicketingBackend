@@ -18,7 +18,7 @@ public class StoragesController : ControllerBase
 
 
     [HttpPost("upload")]
-    public async Task<DocumentInfoDto> Upload(IFormFile file)
+    public async Task<DocumentInfoDto> Upload([FromForm]IFormFile file)
     {
         const long maxFileSize = 10 * 1024 * 1024;
         if (file == null || file.Length == 0)
