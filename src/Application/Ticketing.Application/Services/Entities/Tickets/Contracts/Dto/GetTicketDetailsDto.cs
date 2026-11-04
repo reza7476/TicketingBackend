@@ -1,4 +1,5 @@
 ﻿using System.Security.Principal;
+using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
 using Ticketing.Domain.Entities.Tickets;
 
 namespace Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
@@ -13,6 +14,7 @@ public class GetTicketDetailsDto
     public string Title { get; set; } = default!;
     public string OwnerOrgan { get; set; } = default!;//user organ
     public long Number { get; set; }
+    public List<DocumentDto> Documents { get; set; } = new();
     public List<TicketRepliedDto> Replies { get; set; } = new();
     public List<AssignmentHistoryDto> AssignmentHistory { get; set; } = new();
 }

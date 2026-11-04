@@ -1,4 +1,6 @@
-﻿using Ticketing.Domain.Entities.Tickets;
+﻿using System.Reflection.Metadata.Ecma335;
+using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
+using Ticketing.Domain.Entities.Tickets;
 
 namespace Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 
@@ -10,6 +12,7 @@ public class GetTicketDetailsForAgentDto
     public DateTime CreatedAt { get; set; }
     public TicketStatus Status { get; set; }
     public Priority Priority { get; set; }
+    public List<DocumentDto> Documents { get; set; } = new();
     public List<TicketRepliesDto> Replies { get; set; } = new();
 }
 public class TicketRepliesDto

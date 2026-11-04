@@ -1,4 +1,5 @@
-﻿using Ticketing.Domain.Entities.Tickets;
+﻿using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
+using Ticketing.Domain.Entities.Tickets;
 
 namespace Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 
@@ -11,6 +12,7 @@ public class GetClientTicketDetailsDto
     public TicketStatus Status { get; set; }
     public Priority Priority { get; set; }
     public List<TicketClientRepliesDto> Replies { get; set; } = new();
+    public List<DocumentDto> Documents { get; set; } = new();
 }
 public class TicketClientRepliesDto
 {
