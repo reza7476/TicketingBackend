@@ -18,7 +18,7 @@ public class TicketDocumentConfiguration : IEntityTypeConfiguration<TicketDocume
         builder
             .HasOne(t => t.Ticket)
             .WithMany(_ => _.Documents)
-            .HasForeignKey(t => t.Id)
+            .HasForeignKey(t => t.TicketId)
             .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
     }
 }
