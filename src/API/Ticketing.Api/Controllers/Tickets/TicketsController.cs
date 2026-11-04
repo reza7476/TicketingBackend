@@ -63,14 +63,14 @@ public class TicketsController : ControllerBase
     }
 
 
-    [Authorize(Roles=SystemRole.Agent)]
+    [Authorize(Roles = SystemRole.Agent)]
     [HttpGet("all-for-agent")]
     public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
-        [FromQuery] Pagination? pagination = null, 
-        [FromQuery] TicketFilterDto? filter=null)
+        [FromQuery] Pagination? pagination = null,
+        [FromQuery] TicketFilterDto? filter = null)
     {
         var userId = _userTokenService.UserId;
-        return await _ticketService.GetAllAgentTickets(userId!,pagination, filter);
+        return await _ticketService.GetAllAgentTickets(userId!, pagination, filter);
     }
 
     [Authorize(Roles = SystemRole.Agent)]
@@ -78,7 +78,7 @@ public class TicketsController : ControllerBase
     public async Task<GetTicketDetailsForAgentDto?> GetDetailsForAgent([FromRoute] string id)
     {
         return await _ticketService.GetDetailsForAgent(id);
-    } 
+    }
 
     [Authorize(Roles = SystemRole.Client)]
     [HttpGet("all-for-client")]
@@ -100,7 +100,7 @@ public class TicketsController : ControllerBase
         return await _ticketService.GetDetailsForClient(id, userId!);
     }
 
-    [Authorize(Roles=SystemRole.Admin+","+
+    [Authorize(Roles = SystemRole.Admin + "," +
         SystemRole.Administrator)]
     [HttpPost("assign-to-agent")]
     public async Task AssignToAgent([FromBody] AssignTicketToAgentDto dto)

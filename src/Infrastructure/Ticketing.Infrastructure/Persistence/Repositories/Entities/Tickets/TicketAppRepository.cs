@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 using Ticketing.Domain.Entities.TicketAssignments;
@@ -200,7 +201,13 @@ public class TicketAppRepository : ITicketRepository
                 Status = ticket.Status,
                 Title = ticket.Title,
                 Number = ticket.Number,
-
+                Documents = ticket.Documents
+                .Select(_ => new DocumentDto()
+                {
+                    DocumentId = _.DocumentId,
+                    Extension = _.Extension
+                })
+                .ToList(),
                 Replies = (
                     from reply in _replies
                     join replyUser in _users
@@ -253,7 +260,11 @@ public class TicketAppRepository : ITicketRepository
             Priority = ticket.Priority,
             Status = ticket.Status,
             Title = ticket.Title,
-
+            Documents = ticket.Documents.Select(_ => new DocumentDto()
+            {
+                DocumentId = _.DocumentId,
+                Extension = _.Extension,
+            }).ToList(),
             Replies = (
                 from reply in _replies
                 join replyUser in users
@@ -295,6 +306,11 @@ public class TicketAppRepository : ITicketRepository
                  Priority = ticket.Priority,
                  Status = ticket.Status,
                  Title = ticket.Title,
+                 Documents = ticket.Documents.Select(_ => new DocumentDto()
+                 {
+                     DocumentId = _.DocumentId,
+                     Extension = _.Extension
+                 }).ToList(),
                  Replies = (
                     from reply in ticketReplies
                     join replyUser in users
