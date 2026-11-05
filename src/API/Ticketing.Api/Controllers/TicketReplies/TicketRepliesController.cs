@@ -56,12 +56,4 @@ public class TicketRepliesController : ControllerBase
     {
         await _ticketReplyHandler.Approve(dto);
     }
-
-
-    [Authorize(Roles = SystemRole.Client)]
-    [HttpPost("reply-by-client")]
-    public async Task<string> ReplyTicketByClient([FromBody] ReplyTicketHandlerDto dto)
-    {
-        throw null;
-    }
 }

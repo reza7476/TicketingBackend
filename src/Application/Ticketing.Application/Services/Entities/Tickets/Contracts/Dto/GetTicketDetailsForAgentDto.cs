@@ -23,4 +23,5 @@ public class TicketRepliesDto
     public string IssuedBy { get; set; } = default!;    //نقش پاسخ دهنده 
     public DateTime CreatedAt { get; set; }
     public bool ApprovedByAdmin { get; set; }
+    public List<DocumentDto> Documents { get; set; } = new();
 }

@@ -221,7 +221,13 @@ public class TicketAppRepository : ITicketRepository
                         RepliedBy = replyUser.FirstName + " " + replyUser.LastName,
                         Content = reply.Content,
                         ApprovedByAdmin = reply.ApprovedByAdmin,
-                        IssuedBy = reply.IssuedBy
+                        IssuedBy = reply.IssuedBy,
+                        Documents = reply.Documents.Select(_ => new DocumentDto()
+                        {
+                            Extension = _.Extension,
+                            DocumentId = _.DocumentId,
+
+                        }).ToList(),
                     }
                 ).ToList(),
 
@@ -278,7 +284,12 @@ public class TicketAppRepository : ITicketRepository
                     Content = reply.Content,
                     IssuedBy = reply.IssuedBy,
                     CreatedAt = reply.CreatedAt,
-                    ApprovedByAdmin = reply.ApprovedByAdmin
+                    ApprovedByAdmin = reply.ApprovedByAdmin,
+                    Documents = reply.Documents.Select(_ => new DocumentDto()
+                    {
+                        DocumentId = _.DocumentId,
+                        Extension = _.Extension,
+                    }).ToList()
                 }
             ).ToList()
         }).FirstOrDefaultAsync();
@@ -317,7 +328,7 @@ public class TicketAppRepository : ITicketRepository
                         on reply.UserId equals replyUser.Id
                     where reply.ApprovedByAdmin
                        || reply.IssuedBy == "Client"
-                       orderby reply.CreatedAt ascending
+                    orderby reply.CreatedAt ascending
                     select new TicketClientRepliesDto
                     {
                         CreatedAt = reply.CreatedAt,
@@ -325,7 +336,11 @@ public class TicketAppRepository : ITicketRepository
                         Content = reply.Content,
                         IssuedBy = reply.IssuedBy,
                         Id = reply.Id,
-                       
+                        Documents = reply.Documents.Select(_ => new DocumentDto()
+                        {
+                            DocumentId = _.DocumentId,
+                            Extension = _.Extension
+                        }).ToList()
                     }).ToList()
              }).FirstOrDefaultAsync();
         return query;
