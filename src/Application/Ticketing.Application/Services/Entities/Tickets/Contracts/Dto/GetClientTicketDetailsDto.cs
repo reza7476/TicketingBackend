@@ -21,4 +21,5 @@ public class TicketClientRepliesDto
     public string Content { get; set; } = default!;
     public string IssuedBy { get; set; } = default!;    //نقش پاسخ دهنده 
     public DateTime CreatedAt { get; set; }
+    public List<DocumentDto> Documents { get; set; } = new();
 }

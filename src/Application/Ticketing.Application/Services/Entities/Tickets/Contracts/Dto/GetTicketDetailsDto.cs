@@ -35,6 +35,7 @@ public class TicketRepliedDto
     public string IssuedBy { get; set; } = default!;//client agent admin
 
     public bool ApprovedByAdmin { get; set; }
+    public List<DocumentDto> Documents { get; set; }
 
 }
 
