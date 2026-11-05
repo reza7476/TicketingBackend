@@ -13,8 +13,8 @@ public static class Program
         EnsureDatabaseExist(connectionString);
 
         var runner = CreateRunner(connectionString);
-         runner.MigrateUp();
-        //runner.MigrateDown(202610171421);
+        runner.MigrateUp();
+        //runner.MigrateDown(202610220916);
 
     }
 

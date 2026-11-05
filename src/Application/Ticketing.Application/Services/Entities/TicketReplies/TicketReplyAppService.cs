@@ -46,6 +46,16 @@ public class TicketReplyAppService : ITicketReplyService
             UserId = userId,
         };
 
+        if (dto.Document != null)
+        {
+            reply.Documents.Add(new ReplyDocuments()
+            {
+                Id=Guid.NewGuid().ToString(),   
+                DocumentId=dto.Document.DocumentId,
+                Extension=dto.Document.Extension,
+            });
+        }
+         
         await _repository.Add(reply);
         await _unitOfWork.Complete();
         return reply.Id;

@@ -317,6 +317,7 @@ public class TicketAppRepository : ITicketRepository
                         on reply.UserId equals replyUser.Id
                     where reply.ApprovedByAdmin
                        || reply.IssuedBy == "Client"
+                       orderby reply.CreatedAt ascending
                     select new TicketClientRepliesDto
                     {
                         CreatedAt = reply.CreatedAt,
@@ -324,6 +325,7 @@ public class TicketAppRepository : ITicketRepository
                         Content = reply.Content,
                         IssuedBy = reply.IssuedBy,
                         Id = reply.Id,
+                       
                     }).ToList()
              }).FirstOrDefaultAsync();
         return query;
