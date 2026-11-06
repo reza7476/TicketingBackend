@@ -139,6 +139,25 @@ public class TicketAppService : ITicketService
         }
     }
 
+    public async Task Edit(EditTicketDto dto)
+    {
+        var ticket = await _repository.FindById(dto.TicketId);
+
+        if (ticket == null)
+        {
+            throw new TicketNotFoundException();
+        }
+
+        if (ticket.Status != TicketStatus.Open)
+        {
+            throw new ClientDoesNotAllowChangeStatusException();
+        }
+        ticket.Title = dto.Title;
+        ticket.Content = dto.Content;
+        ticket.Priority = dto.Priority;
+        await _unitOfWork.Complete();
+    }
+
     public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
         string userId,
         IPagination? pagination,

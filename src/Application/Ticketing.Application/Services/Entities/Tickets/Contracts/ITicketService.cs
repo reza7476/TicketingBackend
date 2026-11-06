@@ -12,6 +12,7 @@ public interface ITicketService : IService
     Task ChangeStatusIntoAnswered(string ticketId);
     Task ChangeStatusIntoInProgress(string ticketId);
     Task ChangeStatusIntoOpen(string ticketId, string roleId);
+    Task Edit(EditTicketDto dto);
     Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
         string userId,
         IPagination? pagination,
