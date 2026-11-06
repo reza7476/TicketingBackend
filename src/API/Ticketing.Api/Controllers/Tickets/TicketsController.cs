@@ -38,6 +38,14 @@ public class TicketsController : ControllerBase
         return await _ticketService.Add(dto, userId);
     }
 
+
+    [Authorize(Roles=SystemRole.Client)]
+    [HttpPut("edit")]
+    public async Task Edit([FromForm] EditTicketDto dto)
+    {
+        await _ticketService.Edit(dto);
+    }
+
     [Authorize(Roles =
         SystemRole.Admin + "," +
         SystemRole.Administrator)]
