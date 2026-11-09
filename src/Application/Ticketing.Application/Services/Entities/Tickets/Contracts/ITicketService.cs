@@ -7,6 +7,7 @@ namespace Ticketing.Application.Services.Entities.Tickets.Contracts;
 public interface ITicketService : IService
 {
     Task<string> Add(AddTicketDto dto, string? userId);
+    Task AddFile(AddTicketFileDto dto);
     Task AssignToAgent(AssignTicketToAgentDto dto);
     Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto);
     Task ChangeStatusIntoAnswered(string ticketId);

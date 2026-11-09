@@ -46,6 +46,14 @@ public class TicketsController : ControllerBase
         await _ticketService.Edit(dto);
     }
 
+    [Authorize]
+    [HttpPost("add-file")]
+    public async Task AddFile([FromBody] AddTicketFileDto dto)
+    {
+        await _ticketService.AddFile(dto);
+    } 
+
+
     [Authorize(Roles =
         SystemRole.Admin + "," +
         SystemRole.Administrator)]
@@ -58,8 +66,6 @@ public class TicketsController : ControllerBase
     {
         return await _ticketService.GetAllForAdmin(pagination, filter, search);
     }
-
-
 
     [Authorize(Roles =
         SystemRole.Admin + "," +
