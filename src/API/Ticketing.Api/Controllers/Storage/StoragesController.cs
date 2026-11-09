@@ -46,7 +46,7 @@ public class StoragesController : ControllerBase
         return File(result.Data, result.ContentType, result.FileName);
     }
 
-    [HttpDelete("documentId")]
+    [HttpDelete("{documentId}/documentId")]
     public async Task Delete([FromRoute] string documentId)
     {
         await _service.Delete(documentId);
