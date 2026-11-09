@@ -50,7 +50,7 @@ public class TicketsController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("remove-file")]
+    [HttpDelete("{id}/document/{documentId}/remove-file")]
     public async Task RemoveFile(
         [FromRoute] string documentId,
         [FromRoute]string id)
