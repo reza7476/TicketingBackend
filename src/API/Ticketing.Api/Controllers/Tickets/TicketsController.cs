@@ -4,6 +4,7 @@ using Ticketing.Application;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.Services.Entities.Tickets.Contracts.Dto;
 using Ticketing.Application.UseCases.AssignTickets.Contracts;
+using Ticketing.Application.UseCases.Tickets.Contracts;
 using Ticketing.Infrastructure.Persistence.Extensions.Paginations;
 using Ticketing.Shared.Interfaces.Paginations;
 using Ticketing.Shared.JWT;
@@ -17,16 +18,18 @@ public class TicketsController : ControllerBase
     private readonly ITicketService _ticketService;
     private readonly IUserTokenService _userTokenService;
     private readonly IAssignHandler _assignHandler;
-
+    private readonly ITicketHandler _ticketHandler;
 
     public TicketsController(
         ITicketService ticketService,
         IUserTokenService userTokenService,
-        IAssignHandler assignHandler)
+        IAssignHandler assignHandler,
+        ITicketHandler ticketHandler)
     {
         _ticketService = ticketService;
         _userTokenService = userTokenService;
         _assignHandler = assignHandler;
+        _ticketHandler = ticketHandler;
     }
 
     [Authorize(Roles = SystemRole.Client)]
@@ -45,6 +48,19 @@ public class TicketsController : ControllerBase
     {
         await _ticketService.Edit(dto);
     }
+
+    [Authorize]
+    [HttpDelete("remove-file")]
+    public async Task RemoveFile(
+        [FromRoute] string documentId,
+        [FromRoute]string id)
+    {
+        var userId=_userTokenService.UserId;
+        await _ticketHandler.RemoveDocument(documentId, id, userId!);
+    }
+
+
+
 
     [Authorize]
     [HttpPost("add-file")]

@@ -8,4 +8,5 @@ public interface IDocumentService : IService
 {
     Task Add(AddDocumentDto dto);
     Task<Document?> FindById(string id);
+    Task Remove(string documentId);
 }
