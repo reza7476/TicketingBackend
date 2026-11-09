@@ -8,7 +8,6 @@ public interface ITicketService : IService
 {
     Task<string> Add(AddTicketDto dto, string? userId);
     Task AddFile(AddTicketFileDto dto);
-    Task AssignToAgent(AssignTicketToAgentDto dto);
     Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto);
     Task ChangeStatusIntoAnswered(string ticketId);
     Task ChangeStatusIntoInProgress(string ticketId);
@@ -30,4 +29,5 @@ public interface ITicketService : IService
     Task<GetTicketDetailsForAgentDto?> GetDetailsForAgent(string id);
     Task<GetTicketDetailsDto?> GetDetailsForAmin(string id);
     Task<GetClientTicketDetailsDto?> GetDetailsForClient(string id, string userId);
+    Task RemoveDocument(RemoveDocumentDto dto);
 }

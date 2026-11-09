@@ -24,4 +24,10 @@ public class DocumentAppRepository : IDocumentRepository
     {
         return await _documents.FindAsync(id);
     }
+
+    public async Task Remove(Document document)
+    {
+        _documents.Remove(document);
+        await Task.CompletedTask;
+    }
 }

@@ -7,4 +7,5 @@ public interface IDocumentRepository : IRepository
 {
     Task Add(Document document);
     Task<Document?> FindById(string id);
+    Task Remove(Document document);
 }

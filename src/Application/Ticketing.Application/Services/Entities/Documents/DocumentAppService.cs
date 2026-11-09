@@ -1,6 +1,7 @@
 ﻿using Ticketing.Application.Services.Entities.Documents.Contracts;
 using Ticketing.Application.Services.Entities.Documents.Contracts.Dto;
 using Ticketing.Domain.Entities.Documents;
+using Ticketing.Shared.Exceptions;
 using Ticketing.Shared.Interfaces;
 
 namespace Ticketing.Application.Services.Entities.Documents;
@@ -41,5 +42,17 @@ public class DocumentAppService : IDocumentService
     public async Task<Document?> FindById(string id)
     {
         return await _repository.FindById(id);
+    }
+
+    public async Task Remove(string documentId)
+    {
+      var document=await _repository.FindById(documentId);
+
+        if (document == null)
+        {
+            throw new DocumentNotFoundException();
+        }
+
+        await _repository.Remove(document);
     }
 }

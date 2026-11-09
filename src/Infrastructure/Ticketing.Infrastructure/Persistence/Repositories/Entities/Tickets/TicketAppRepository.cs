@@ -19,7 +19,7 @@ public class TicketAppRepository : ITicketRepository
     private readonly DbSet<User> _users;
     private readonly DbSet<TicketReply> _replies;
     private readonly DbSet<TicketAssignment> _assignments;
-
+    private readonly DbSet<TicketDocument> _documents;
 
     public TicketAppRepository(AppDbContext context)
     {
@@ -27,6 +27,7 @@ public class TicketAppRepository : ITicketRepository
         _users = context.Set<User>();
         _replies = context.Set<TicketReply>();
         _assignments = context.Set<TicketAssignment>();
+        _documents = context.Set<TicketDocument>();
     }
 
     public async Task Add(Ticket ticket)
@@ -45,6 +46,11 @@ public class TicketAppRepository : ITicketRepository
             .Where(_ => _.Id == id)
             .Include(_ => _.Documents)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<TicketDocument?> FindDocument(string documentId)
+    {
+        return await _documents.FirstOrDefaultAsync(_ => _.DocumentId == documentId);
     }
 
     public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
@@ -352,5 +358,11 @@ public class TicketAppRepository : ITicketRepository
                     }).ToList()
              }).FirstOrDefaultAsync();
         return query;
+    }
+
+    public async Task RemoveTicketDocument(TicketDocument document)
+    {
+        _documents.Remove(document);
+        await Task.CompletedTask;
     }
 }

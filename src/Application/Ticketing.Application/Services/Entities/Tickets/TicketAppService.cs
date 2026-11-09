@@ -4,6 +4,7 @@ using Ticketing.Application.Services.Entities.Tickets.Exceptions;
 using Ticketing.Application.Services.Entities.Users.Contracts;
 using Ticketing.Application.Services.Entities.Users.Exceptions;
 using Ticketing.Domain.Entities.Tickets;
+using Ticketing.Shared.Exceptions;
 using Ticketing.Shared.Interfaces;
 using Ticketing.Shared.Interfaces.Paginations;
 
@@ -81,11 +82,6 @@ public class TicketAppService : ITicketService
         });
 
         await _unitOfWork.Complete();
-    }
-
-    public Task AssignToAgent(AssignTicketToAgentDto dto)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task ChangeStatusByClient(ChangeTicketStatusByClientDto dto)
@@ -214,5 +210,28 @@ public class TicketAppService : ITicketService
     public async Task<GetClientTicketDetailsDto?> GetDetailsForClient(string id, string userId)
     {
         return await _repository.GetDetailsForClient(id, userId);
+    }
+
+    public async Task RemoveDocument(RemoveDocumentDto dto)
+    {
+        var ticket = await _repository.FindByIdWithDocuments(dto.TicketId);
+        if (ticket==null)
+        {
+            throw new TicketNotFoundException();   
+        }
+
+        var document = await _repository.FindDocument(dto.DocumentId);
+        
+        if (document==null)
+        {
+            throw new DocumentNotFoundException();
+        }
+        if (ticket.UserId != dto.UserId)
+        {
+            throw new UserDoesNotHaveAllowDeleteDocumentException();
+        }
+
+        await _repository.RemoveTicketDocument(document);
+        await _unitOfWork.Complete();
     }
 }
