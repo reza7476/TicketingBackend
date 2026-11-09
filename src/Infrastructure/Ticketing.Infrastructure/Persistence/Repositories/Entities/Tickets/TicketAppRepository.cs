@@ -39,6 +39,14 @@ public class TicketAppRepository : ITicketRepository
         return await _tickets.FindAsync(id);
     }
 
+    public async Task<Ticket?> FindByIdWithDocuments(string id)
+    {
+        return await _tickets
+            .Where(_ => _.Id == id)
+            .Include(_ => _.Documents)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<IPageResult<GetAllAgentTicketsDto>> GetAllAgentTickets(
         string userId,
         IPagination? pagination,

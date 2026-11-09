@@ -26,17 +26,19 @@ public class MinIOAppService : IFileStorage
         _documentService = documentService;
     }
 
-    public Task Delete(string id)
+    public async Task Delete(string id)
     {
-        throw new NotImplementedException();
+        await _client.RemoveObjectAsync(new RemoveObjectArgs()
+            .WithBucket(_setting.Value.BucketName)
+            .WithObject(id));
     }
 
     public async Task<DownloadDocumentDto?> Download(string id)
     {
         var document = await _documentService.FindById(id);
-        if(document == null) 
+        if (document == null)
         {
-            return null;    
+            return null;
         }
         byte[]? file = null;
         var objectArg = new GetObjectArgs()
@@ -44,9 +46,9 @@ public class MinIOAppService : IFileStorage
             .WithObject(document.ObjectName)
             .WithCallbackStream(stream =>
             {
-                using var ms=new MemoryStream();
+                using var ms = new MemoryStream();
                 stream.CopyTo(ms);
-                file=ms.ToArray();
+                file = ms.ToArray();
             });
         try
         {
@@ -61,8 +63,8 @@ public class MinIOAppService : IFileStorage
         return new DownloadDocumentDto()
         {
             Data = file!,
-            ContentType=document.ContentType,
-            FileName=document.OriginalFileName
+            ContentType = document.ContentType,
+            FileName = document.OriginalFileName
         };
     }
 

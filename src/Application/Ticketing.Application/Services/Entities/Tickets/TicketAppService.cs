@@ -64,6 +64,25 @@ public class TicketAppService : ITicketService
 
     }
 
+    public async Task AddFile(AddTicketFileDto dto)
+    {
+        var ticket = await _repository.FindByIdWithDocuments(dto.Id);
+        if (ticket == null)
+        {
+            throw new TicketNotFoundException();
+        }
+
+        ticket.Documents.Add(new TicketDocument()
+        {
+            Id = Guid.NewGuid().ToString(),
+            DocumentId = dto.Document.DocumentId,
+            Extension = dto.Document.Extension,
+
+        });
+
+        await _unitOfWork.Complete();
+    }
+
     public Task AssignToAgent(AssignTicketToAgentDto dto)
     {
         throw new NotImplementedException();
