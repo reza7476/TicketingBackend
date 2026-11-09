@@ -44,7 +44,7 @@ public class TicketsController : ControllerBase
 
     [Authorize(Roles=SystemRole.Client)]
     [HttpPut("edit")]
-    public async Task Edit([FromForm] EditTicketDto dto)
+    public async Task Edit([FromBody] EditTicketDto dto)
     {
         await _ticketService.Edit(dto);
     }
