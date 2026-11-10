@@ -11,16 +11,24 @@ public class TicketReplyRepository : ITicketReplyRepository
 
     private readonly DbSet<TicketReply> _ticketReplies;
     private readonly DbSet<Ticket> _tickets;
+    private readonly DbSet<ReplyDocuments> _replyDocuments;
 
     public TicketReplyRepository(AppDbContext context)
     {
         _ticketReplies = context.Set<TicketReply>();
         _tickets = context.Set<Ticket>();
+        _replyDocuments = context.Set<ReplyDocuments>();
     }
 
     public async Task Add(TicketReply reply)
     {
         await _ticketReplies.AddAsync(reply);
+    }
+
+    public async Task DeleteReplyDocument(ReplyDocuments document)
+    {
+        _replyDocuments.Remove(document);
+        await Task.CompletedTask;
     }
 
     public async Task<TicketReply?> FindById(string id)
@@ -34,6 +42,11 @@ public class TicketReplyRepository : ITicketReplyRepository
             .Include(_ => _.Documents)
             .Where(_ => _.Id == replyId)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<ReplyDocuments?> FindDocumentById(string documentId)
+    {
+        return await _replyDocuments.FindAsync(documentId);
     }
 
     public async Task<bool> IsExistedById(string id)

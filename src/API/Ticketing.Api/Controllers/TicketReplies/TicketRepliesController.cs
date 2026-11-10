@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using Ticketing.Application;
 using Ticketing.Application.Services.Entities.TicketReplies.Contracts;
 using Ticketing.Application.Services.Entities.TicketReplies.Contracts.Dto;
@@ -62,5 +63,14 @@ public class TicketRepliesController : ControllerBase
     public async Task AddFile([FromBody] AddReplyDocumentDto dto)
     {
         await _replyService.AddFile(dto);
+    }
+
+    [Authorize]
+    [HttpDelete("document/{documentId}")]
+    public async Task DeleteFile(
+       
+        [FromRoute] string documentId)
+    {
+        await _ticketReplyHandler.DeleteFile( documentId);
     }
 }

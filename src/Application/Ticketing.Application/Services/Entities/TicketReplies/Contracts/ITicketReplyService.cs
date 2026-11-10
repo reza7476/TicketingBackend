@@ -12,4 +12,5 @@ public interface ITicketReplyService : IService
     Task AddFile(AddReplyDocumentDto dto);
     Task<string> Approve(string id);
     Task Edit(string id, EditTicketReplyDto dto);
+    Task RemoveDocument(string documentId);
 }

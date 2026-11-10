@@ -1,4 +1,5 @@
-﻿using Ticketing.Application.Services.Entities.TicketReplies.Contracts;
+﻿using Ticketing.Application.Services.Entities.Documents.Contracts;
+using Ticketing.Application.Services.Entities.TicketReplies.Contracts;
 using Ticketing.Application.Services.Entities.TicketReplies.Contracts.Dto;
 using Ticketing.Application.Services.Entities.Tickets.Contracts;
 using Ticketing.Application.UseCases.TicketReplies.Contracts;
@@ -11,16 +12,18 @@ public class TicketReplyHandler : ITicketReplyHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly ITicketService _ticketService;
     private readonly ITicketReplyService _ticketReplyService;
-
+    private readonly IDocumentService _documentService;
 
     public TicketReplyHandler(
         IUnitOfWork unitOfWork,
         ITicketService ticketService,
-        ITicketReplyService ticketReplyService)
+        ITicketReplyService ticketReplyService,
+        IDocumentService documentService)
     {
         _unitOfWork = unitOfWork;
         _ticketService = ticketService;
         _ticketReplyService = ticketReplyService;
+        _documentService = documentService;
     }
 
     public async Task<string> Add(AddTicketReplyDto dto, string userId, string userRole)
@@ -57,5 +60,23 @@ public class TicketReplyHandler : ITicketReplyHandler
             throw;
         }
 
+    }
+
+    public async Task DeleteFile( string documentId)
+    {
+        await _unitOfWork.Begin();
+        try
+        {
+            await _ticketReplyService.RemoveDocument( documentId);
+            await _documentService.Remove(documentId);
+
+            await _unitOfWork.Commit();
+
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RoleBack();   
+            throw;
+        }
     }
 }
