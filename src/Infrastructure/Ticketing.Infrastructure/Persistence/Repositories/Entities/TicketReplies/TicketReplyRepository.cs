@@ -15,7 +15,7 @@ public class TicketReplyRepository : ITicketReplyRepository
     public TicketReplyRepository(AppDbContext context)
     {
         _ticketReplies = context.Set<TicketReply>();
-        _tickets = context.Set<Ticket>();   
+        _tickets = context.Set<Ticket>();
     }
 
     public async Task Add(TicketReply reply)
@@ -28,8 +28,21 @@ public class TicketReplyRepository : ITicketReplyRepository
         return await _ticketReplies.FindAsync(id);
     }
 
+    public async Task<TicketReply?> FindByIdWithDocument(string replyId)
+    {
+        return await _ticketReplies
+            .Include(_ => _.Documents)
+            .Where(_ => _.Id == replyId)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> IsExistedById(string id)
+    {
+        return await _ticketReplies.AnyAsync(x => x.Id == id);
+    }
+
     public async Task<bool> TicketIsExistById(string ticketId)
     {
-       return await _tickets.AnyAsync(_=>_.Id== ticketId);  
+        return await _tickets.AnyAsync(_ => _.Id == ticketId);
     }
 }

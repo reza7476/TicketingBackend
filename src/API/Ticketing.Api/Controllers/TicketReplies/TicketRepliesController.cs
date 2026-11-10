@@ -56,4 +56,11 @@ public class TicketRepliesController : ControllerBase
     {
         await _ticketReplyHandler.Approve(dto);
     }
+
+    [Authorize]
+    [HttpPost("add-file")]
+    public async Task AddFile([FromBody] AddReplyDocumentDto dto)
+    {
+        await _replyService.AddFile(dto);
+    }
 }

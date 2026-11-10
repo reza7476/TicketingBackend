@@ -7,5 +7,7 @@ public interface ITicketReplyRepository : IRepository
 {
     Task Add(TicketReply reply);
     Task<TicketReply?> FindById(string id);
+    Task<TicketReply?> FindByIdWithDocument(string replyId);
+    Task<bool> IsExistedById(string replyId);
     Task<bool> TicketIsExistById(string ticketId);
 }

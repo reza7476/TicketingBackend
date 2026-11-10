@@ -61,6 +61,23 @@ public class TicketReplyAppService : ITicketReplyService
         return reply.Id;
     }
 
+    public async Task AddFile(AddReplyDocumentDto dto)
+    {
+
+        var reply = await _repository.FindByIdWithDocument(dto.ReplyId);
+        if(reply == null) 
+            throw new TicketReplyNotFoundException();
+        reply.Documents.Add(new ReplyDocuments()
+        {
+            Id = Guid.NewGuid().ToString(),
+            DocumentId = dto.Document.DocumentId,
+            Extension = dto.Document.Extension,
+            ReplyId = dto.ReplyId,
+        });
+
+        await _unitOfWork.Complete();
+    }
+
     public async Task<string> Approve(string id)
     {
 
