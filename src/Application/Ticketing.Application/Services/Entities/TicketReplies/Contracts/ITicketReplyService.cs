@@ -9,6 +9,8 @@ public interface ITicketReplyService : IService
         AddTicketReplyDto dto,
         string userId,
         string userRole);
+    Task AddFile(AddReplyDocumentDto dto);
     Task<string> Approve(string id);
     Task Edit(string id, EditTicketReplyDto dto);
+    Task RemoveDocument(string documentId);
 }

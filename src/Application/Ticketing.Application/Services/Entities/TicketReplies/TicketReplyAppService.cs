@@ -2,8 +2,8 @@
 using Ticketing.Application.Services.Entities.TicketReplies.Contracts.Dto;
 using Ticketing.Application.Services.Entities.TicketReplies.Exceptions;
 using Ticketing.Application.Services.Entities.Tickets.Exceptions;
-using Ticketing.Application.UseCases.TicketReplies.Contracts.Dto;
 using Ticketing.Domain.Entities.TicketReplies;
+using Ticketing.Shared.Exceptions;
 using Ticketing.Shared.Interfaces;
 
 namespace Ticketing.Application.Services.Entities.TicketReplies;
@@ -26,11 +26,11 @@ public class TicketReplyAppService : ITicketReplyService
     }
 
     public async Task<string> Add(
-        AddTicketReplyDto dto, 
+        AddTicketReplyDto dto,
         string userId,
         string userRole)
     {
-        if(!await _repository.TicketIsExistById(dto.TicketId))
+        if (!await _repository.TicketIsExistById(dto.TicketId))
         {
             throw new TicketNotFoundException();
         }
@@ -50,15 +50,32 @@ public class TicketReplyAppService : ITicketReplyService
         {
             reply.Documents.Add(new ReplyDocuments()
             {
-                Id=Guid.NewGuid().ToString(),   
-                DocumentId=dto.Document.DocumentId,
-                Extension=dto.Document.Extension,
+                Id = Guid.NewGuid().ToString(),
+                DocumentId = dto.Document.DocumentId,
+                Extension = dto.Document.Extension,
             });
         }
-         
+
         await _repository.Add(reply);
         await _unitOfWork.Complete();
         return reply.Id;
+    }
+
+    public async Task AddFile(AddReplyDocumentDto dto)
+    {
+
+        var reply = await _repository.FindByIdWithDocument(dto.ReplyId);
+        if (reply == null)
+            throw new TicketReplyNotFoundException();
+        reply.Documents.Add(new ReplyDocuments()
+        {
+            Id = Guid.NewGuid().ToString(),
+            DocumentId = dto.Document.DocumentId,
+            Extension = dto.Document.Extension,
+            ReplyId = dto.ReplyId,
+        });
+
+        await _unitOfWork.Complete();
     }
 
     public async Task<string> Approve(string id)
@@ -78,13 +95,26 @@ public class TicketReplyAppService : ITicketReplyService
     public async Task Edit(string id, EditTicketReplyDto dto)
     {
         var reply = await _repository.FindById(id);
-        if(reply == null)
+        if (reply == null)
         {
             throw new TicketReplyNotFoundException();
         }
 
 
         reply.Content = dto.Content;
-        await _unitOfWork.Complete();   
+        await _unitOfWork.Complete();
+    }
+
+    public async Task RemoveDocument( string documentId)
+    {
+        var document = await _repository.FindDocumentById(documentId);
+        if(document == null) 
+        {
+            throw new DocumentNotFoundException();
+        }
+
+        await _repository.DeleteReplyDocument(document);
+        await _unitOfWork.Complete();
+
     }
 }
