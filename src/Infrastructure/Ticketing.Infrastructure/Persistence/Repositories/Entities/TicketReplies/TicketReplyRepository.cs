@@ -46,7 +46,9 @@ public class TicketReplyRepository : ITicketReplyRepository
 
     public async Task<ReplyDocuments?> FindDocumentById(string documentId)
     {
-        return await _replyDocuments.FindAsync(documentId);
+        return await _replyDocuments
+            .Where(_ => _.DocumentId == documentId)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<bool> IsExistedById(string id)
